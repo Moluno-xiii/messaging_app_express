@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 export const Route = createFileRoute("/auth/login")({
@@ -9,18 +10,44 @@ export const Route = createFileRoute("/auth/login")({
 function RouteComponent() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData);
-    console.log(data);
-    router.navigate({ to: "/" });
+    const formBody = Object.fromEntries(formData);
+    console.log(formBody);
+
+    try {
+      const query = await fetch("http://localhost:7002/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+        body: JSON.stringify(formBody),
+      });
+      const { error, message } = await query.json();
+
+      if (error) {
+        throw new Error(error);
+      } else {
+        console.log("login data : ", message);
+        toast.success(message);
+        router.navigate({ to: "/", replace: true });
+      }
+      return;
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "An unexpected error occured.";
+      toast.error(message);
+      console.error(err);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
       <div className="flex flex-col gap-y-2">
-        <label className="text-primary text-xl font-semibold" htmlFor="email">
+        <label className="text-primary text-base font-semibold" htmlFor="email">
           Email
         </label>
         <input
@@ -34,7 +61,7 @@ function RouteComponent() {
       <div className="relative flex flex-col gap-y-2">
         <label
           htmlFor="password"
-          className="text-primary text-xl font-semibold"
+          className="text-primary text-base font-semibold"
         >
           Password
         </label>

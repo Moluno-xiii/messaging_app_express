@@ -9,7 +9,7 @@
 
 @layer utilities {
   .btn-fill {
-    @apply border-primary hover:bg-background bg-primary text-background hover:text-foreground cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200;
+    @apply border-primary hover:bg-primary/70 bg-primary text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200;
   }
   .btn {
     @apply border-foreground hover:bg-foreground hover:text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200;

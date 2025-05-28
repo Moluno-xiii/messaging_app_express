@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/auth/signup")({
@@ -6,7 +6,9 @@ export const Route = createFileRoute("/auth/signup")({
 });
 
 function RouteComponent() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
@@ -15,12 +17,40 @@ function RouteComponent() {
       return;
     }
     console.log(data);
+    try {
+      const query = await fetch("http://localhost:7002/auth/signup", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+        body: JSON.stringify(data),
+      });
+      const { message, error } = await query.json();
+
+      if (error) {
+        throw new Error(error);
+      } else {
+        router.navigate({ to: "/auth/login", replace: true });
+        toast.success(message);
+      }
+
+      return;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occured, try again.";
+      toast.error(message);
+      console.error(err);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
       <div className="flex flex-col gap-y-2">
-        <label className="text-primary text-xl font-semibold" htmlFor="email">
+        <label className="text-primary text-base font-semibold" htmlFor="email">
           Email
         </label>
         <input
@@ -34,7 +64,7 @@ function RouteComponent() {
       <div className="relative flex flex-col gap-y-2">
         <label
           htmlFor="password"
-          className="text-primary text-xl font-semibold"
+          className="text-primary text-base font-semibold"
         >
           Password
         </label>
@@ -49,7 +79,7 @@ function RouteComponent() {
       <div className="relative flex flex-col gap-y-2">
         <label
           htmlFor="confirmPassword"
-          className="text-primary text-xl font-semibold"
+          className="text-primary text-base font-semibold"
         >
           Confirm Password
         </label>

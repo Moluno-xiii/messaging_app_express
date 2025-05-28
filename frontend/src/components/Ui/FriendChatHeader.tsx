@@ -11,7 +11,7 @@ const FriendChatHeader: React.FC = () => {
         <img
           src="/profile-pic.jpeg"
           alt="Friend's profile picture"
-          className={`size-12 rounded-full ring-2 ring-offset-2 ${isOnline ? "ring-primary" : "ring-background"}`}
+          className={`size-12 rounded-full bg-cover ring-2 ring-offset-2 ${isOnline ? "ring-primary" : "ring-background"}`}
         />
         <div>
           <p className="font-semibold capitalize">Clinton Felix</p>
