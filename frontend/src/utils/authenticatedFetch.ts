@@ -44,8 +44,6 @@ async function authenticatedFetch(
 
     return response;
   } catch (error: unknown) {
-    console.error("Fetch error:", error);
-
     if (error instanceof Error) {
       throw error;
     } else {
@@ -64,15 +62,11 @@ async function handleAuthenticationError(
       return await handleTokenRefresh(originalUrl, originalOptions);
 
     case "MISSING_TOKENS":
-      handleAuthenticationFailure(
-        "Authentication required - redirecting to login",
-      );
+      handleAuthenticationFailure("No Active Session.");
       throw new Error("Authentication required");
 
     case "INVALID_TOKEN":
-      handleAuthenticationFailure(
-        "Authentication required - redirecting to login",
-      );
+      handleAuthenticationFailure("No Active Session.");
       throw new Error("Authentication required");
 
     default:
@@ -114,7 +108,6 @@ async function handleTokenRefresh(
     const errorMessage =
       error instanceof Error ? error.message : "Unknown refresh error";
 
-    console.error("Token refresh failed:", errorMessage);
     handleAuthenticationFailure(`Token refresh failed: ${errorMessage}`);
     throw new Error(errorMessage);
   } finally {
@@ -147,11 +140,7 @@ async function performTokenRefresh(): Promise<void> {
 
       throw new Error(errorMessage);
     }
-
-    console.log("Token refresh successful");
   } catch (error: unknown) {
-    console.error("Token refresh error:", error);
-
     if (error instanceof Error) {
       throw error;
     } else {
@@ -161,11 +150,10 @@ async function performTokenRefresh(): Promise<void> {
 }
 
 function handleAuthenticationFailure(reason: string): void {
-  console.warn("Authentication failed:", reason);
   resetRefreshState();
   toast.error(reason);
   // call logout api from backend route.
-  window.location.href = "/auth/login";
+  // window.location.href = "/auth/login";
 }
 
 function resetRefreshState(): void {

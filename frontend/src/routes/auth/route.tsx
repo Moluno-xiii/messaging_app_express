@@ -1,10 +1,13 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import useAuth from "../../hooks/useAuth";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 export const Route = createFileRoute("/auth")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { user } = useAuth();
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-y-4 md:gap-y-7">
       <div className="flex flex-row items-center gap-x-3">
@@ -22,6 +25,18 @@ function RouteComponent() {
         </Link>
       </div>
       <Outlet />
+      {user ? (
+        <div className="flex flex-col gap-y-2">
+          <span className="italic">Welcome back, {user.email}</span>
+          <Link
+            to="/"
+            className="bg-primary hover:bg-primary/70 flex flex-row items-center justify-between p-2 text-white transition-all duration-300"
+          >
+            Continue
+            <FaArrowRightLong />
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 }

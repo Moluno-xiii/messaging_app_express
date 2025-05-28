@@ -3,7 +3,6 @@ import { verifyToken } from "../utils/auth";
 
 async function verifyJwt(req: Request, res: Response, next: NextFunction) {
   const { accessToken, refreshToken } = req.cookies;
-  console.log("cookies", req.cookies);
 
   if (!accessToken) {
     if (refreshToken) {
@@ -12,18 +11,16 @@ async function verifyJwt(req: Request, res: Response, next: NextFunction) {
         status: "EXPIRED_TOKEN",
       });
       return;
+    } else {
+      res.status(401).json({
+        error: "Missing tokens, login required",
+        status: "MISSING_TOKENS",
+      });
     }
-
-    res.status(401).json({
-      error: "Missing tokens, login required",
-      status: "MISSING_TOKENS",
-    });
   }
 
   try {
     const decoded = verifyToken(accessToken, res);
-    console.log("decoded user :", decoded);
-
     if (!decoded) {
       res
         .status(401)

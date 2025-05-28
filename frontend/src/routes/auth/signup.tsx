@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import toast from "react-hot-toast";
+import { signup } from "../../utils/auth";
 
 export const Route = createFileRoute("/auth/signup")({
   component: RouteComponent,
@@ -11,39 +12,23 @@ function RouteComponent() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData) as {
+      email: string;
+      password: string;
+      confirmPassword: string;
+    };
     if (data.password !== data.confirmPassword) {
       toast.error("Password fields do not match!");
       return;
     }
-    console.log(data);
-    try {
-      const query = await fetch("http://localhost:7002/auth/signup", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        mode: "cors",
-        body: JSON.stringify(data),
-      });
-      const { message, error } = await query.json();
 
-      if (error) {
-        throw new Error(error);
-      } else {
-        router.navigate({ to: "/auth/login", replace: true });
-        toast.success(message);
-      }
+    const { message, error } = await signup(data);
 
-      return;
-    } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "An unexpected error occured, try again.";
-      toast.error(message);
-      console.error(err);
+    if (error) {
+      toast.error(error);
+    } else {
+      router.navigate({ to: "/auth/login", replace: true });
+      toast.success(message ?? "Signup sucessful");
     }
   };
 
@@ -58,7 +43,7 @@ function RouteComponent() {
           type="email"
           className="border-foreground focus:border-primary min-w-sm rounded-xl border p-2 transition-all duration-200 outline-none"
           name="email"
-          placeholder="$youremail@gmail.com"
+          placeholder="$your_emails@gmail.com"
         />
       </div>
       <div className="relative flex flex-col gap-y-2">

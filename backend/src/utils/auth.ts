@@ -36,11 +36,9 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
       (err as any).code === "P2002" &&
       (err as any).meta?.target?.includes("email")
     ) {
-      console.error(err);
       res.status(409).json({ error: "Email already exists!" });
       return;
     }
-    console.error(err);
     res.status(500).json({ error: "Unexpected error, try again." });
   }
 };
@@ -49,7 +47,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    console.log("request body : ", req.body);
     res.status(400).json({ error: "Missing credentials" });
     return;
   }
@@ -75,15 +72,14 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       user.id,
       sessionId
     );
-    console.log("stored refresh token : ", refreshToken);
 
     await redisClient.setEx(
       `session:${sessionId}`,
       15 * 24 * 60 * 60,
       refreshToken
     );
-    setCookies(res, accessToken, refreshToken);
 
+    setCookies(res, accessToken, refreshToken);
     res.status(200).json({ message: "Login successful!", user });
   } catch (err) {
     const error = err instanceof Error ? err.message : "Unexpected error";
@@ -102,19 +98,15 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    // check if token is valid
     const decoded = verifyToken(refreshToken, res);
     if (!decoded) {
       res.status(401).json("Invalid refresh token");
       return;
     }
-    // if token is valid, but doesn't match the stored token with the decoded token's session id
     const { sessionId, email, id } = decoded;
     const storedToken = await redisClient.get(`session:${sessionId}`);
 
     if (refreshToken !== storedToken) {
-      console.log("old refresh token,:", refreshToken);
-      console.log("stored refresh token : ", storedToken);
       res.status(401).json({ error: "Invalid refresh token, log user out" });
       return;
     }
@@ -150,7 +142,6 @@ const verifyToken = (token: string, res: Response) => {
     const data = jwt.verify(token, process.env.TOKEN_SECRET as string);
     return data as TokenData;
   } catch (err) {
-    console.error(err);
     return null;
   }
 };
