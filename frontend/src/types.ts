@@ -15,10 +15,44 @@ interface LinkType {
 }
 
 interface Message {
-  senderId: string;
-  body: string;
-  timeSent: string;
+  date_created: string;
+  date_updated: string;
   id: string;
+  messge: string;
+  receiver_id: string;
+  sender_id: string;
 }
 
-export type { ChatTypes, LinkType, Message };
+interface FriendRequestType {
+  id: string;
+  requestedToEmail: string;
+  requesterEmail: string;
+  status: FriendRequestStatus;
+  dateSent: string;
+  dateResponded: string;
+}
+
+interface Notification {
+  email: string;
+  id: string;
+  message: string;
+  title: string;
+}
+
+interface Friend {
+  friendEmail: string;
+  id: string;
+  staus: "OFFLINE" | "ONLINE";
+  userEmail: string;
+}
+type FriendRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
+
+export type {
+  ChatTypes,
+  LinkType,
+  Message,
+  FriendRequestType,
+  Notification,
+  Friend,
+  FriendRequestStatus,
+};

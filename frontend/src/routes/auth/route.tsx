@@ -29,7 +29,7 @@ function RouteComponent() {
         <div className="flex flex-col gap-y-2">
           <span className="italic">Welcome back, {user.email}</span>
           <Link
-            to="/"
+            to="/chat"
             className="bg-primary hover:bg-primary/70 flex flex-row items-center justify-between p-2 text-white transition-all duration-300"
           >
             Continue

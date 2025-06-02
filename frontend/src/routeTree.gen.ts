@@ -11,12 +11,24 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as NotificationsRouteImport } from './routes/notifications/route'
 import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as SettingsIndexImport } from './routes/settings/index'
+import { Route as ProfilieIndexImport } from './routes/profilie/index'
+import { Route as ChatIndexImport } from './routes/chat/index'
 import { Route as AuthSignupImport } from './routes/auth/signup'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as NotificationsOthersIndexImport } from './routes/notifications/others/index'
+import { Route as NotificationsFriendRequestsIndexImport } from './routes/notifications/friend-requests/index'
 
 // Create/Update Routes
+
+const NotificationsRouteRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRouteRoute = AuthRouteImport.update({
   id: '/auth',
@@ -27,6 +39,24 @@ const AuthRouteRoute = AuthRouteImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsIndexRoute = SettingsIndexImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfilieIndexRoute = ProfilieIndexImport.update({
+  id: '/profilie/',
+  path: '/profilie/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChatIndexRoute = ChatIndexImport.update({
+  id: '/chat/',
+  path: '/chat/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -41,6 +71,19 @@ const AuthLoginRoute = AuthLoginImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+
+const NotificationsOthersIndexRoute = NotificationsOthersIndexImport.update({
+  id: '/others/',
+  path: '/others/',
+  getParentRoute: () => NotificationsRouteRoute,
+} as any)
+
+const NotificationsFriendRequestsIndexRoute =
+  NotificationsFriendRequestsIndexImport.update({
+    id: '/friend-requests/',
+    path: '/friend-requests/',
+    getParentRoute: () => NotificationsRouteRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -60,6 +103,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRoute
     }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/login'
@@ -73,6 +123,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/signup'
       preLoaderRoute: typeof AuthSignupImport
       parentRoute: typeof AuthRouteImport
+    }
+    '/chat/': {
+      id: '/chat/'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/profilie/': {
+      id: '/profilie/'
+      path: '/profilie'
+      fullPath: '/profilie'
+      preLoaderRoute: typeof ProfilieIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/notifications/friend-requests/': {
+      id: '/notifications/friend-requests/'
+      path: '/friend-requests'
+      fullPath: '/notifications/friend-requests'
+      preLoaderRoute: typeof NotificationsFriendRequestsIndexImport
+      parentRoute: typeof NotificationsRouteImport
+    }
+    '/notifications/others/': {
+      id: '/notifications/others/'
+      path: '/others'
+      fullPath: '/notifications/others'
+      preLoaderRoute: typeof NotificationsOthersIndexImport
+      parentRoute: typeof NotificationsRouteImport
     }
   }
 }
@@ -93,45 +178,115 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface NotificationsRouteRouteChildren {
+  NotificationsFriendRequestsIndexRoute: typeof NotificationsFriendRequestsIndexRoute
+  NotificationsOthersIndexRoute: typeof NotificationsOthersIndexRoute
+}
+
+const NotificationsRouteRouteChildren: NotificationsRouteRouteChildren = {
+  NotificationsFriendRequestsIndexRoute: NotificationsFriendRequestsIndexRoute,
+  NotificationsOthersIndexRoute: NotificationsOthersIndexRoute,
+}
+
+const NotificationsRouteRouteWithChildren =
+  NotificationsRouteRoute._addFileChildren(NotificationsRouteRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/notifications': typeof NotificationsRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/chat': typeof ChatIndexRoute
+  '/profilie': typeof ProfilieIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/notifications/friend-requests': typeof NotificationsFriendRequestsIndexRoute
+  '/notifications/others': typeof NotificationsOthersIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/notifications': typeof NotificationsRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/chat': typeof ChatIndexRoute
+  '/profilie': typeof ProfilieIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/notifications/friend-requests': typeof NotificationsFriendRequestsIndexRoute
+  '/notifications/others': typeof NotificationsOthersIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/notifications': typeof NotificationsRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/chat/': typeof ChatIndexRoute
+  '/profilie/': typeof ProfilieIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/notifications/friend-requests/': typeof NotificationsFriendRequestsIndexRoute
+  '/notifications/others/': typeof NotificationsOthersIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/auth/login' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/notifications'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/chat'
+    | '/profilie'
+    | '/settings'
+    | '/notifications/friend-requests'
+    | '/notifications/others'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/login' | '/auth/signup'
-  id: '__root__' | '/' | '/auth' | '/auth/login' | '/auth/signup'
+  to:
+    | '/'
+    | '/auth'
+    | '/notifications'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/chat'
+    | '/profilie'
+    | '/settings'
+    | '/notifications/friend-requests'
+    | '/notifications/others'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/notifications'
+    | '/auth/login'
+    | '/auth/signup'
+    | '/chat/'
+    | '/profilie/'
+    | '/settings/'
+    | '/notifications/friend-requests/'
+    | '/notifications/others/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  NotificationsRouteRoute: typeof NotificationsRouteRouteWithChildren
+  ChatIndexRoute: typeof ChatIndexRoute
+  ProfilieIndexRoute: typeof ProfilieIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
+  NotificationsRouteRoute: NotificationsRouteRouteWithChildren,
+  ChatIndexRoute: ChatIndexRoute,
+  ProfilieIndexRoute: ProfilieIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -145,7 +300,11 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/auth"
+        "/auth",
+        "/notifications",
+        "/chat/",
+        "/profilie/",
+        "/settings/"
       ]
     },
     "/": {
@@ -158,6 +317,13 @@ export const routeTree = rootRoute
         "/auth/signup"
       ]
     },
+    "/notifications": {
+      "filePath": "notifications/route.tsx",
+      "children": [
+        "/notifications/friend-requests/",
+        "/notifications/others/"
+      ]
+    },
     "/auth/login": {
       "filePath": "auth/login.tsx",
       "parent": "/auth"
@@ -165,6 +331,23 @@ export const routeTree = rootRoute
     "/auth/signup": {
       "filePath": "auth/signup.tsx",
       "parent": "/auth"
+    },
+    "/chat/": {
+      "filePath": "chat/index.tsx"
+    },
+    "/profilie/": {
+      "filePath": "profilie/index.tsx"
+    },
+    "/settings/": {
+      "filePath": "settings/index.tsx"
+    },
+    "/notifications/friend-requests/": {
+      "filePath": "notifications/friend-requests/index.tsx",
+      "parent": "/notifications"
+    },
+    "/notifications/others/": {
+      "filePath": "notifications/others/index.tsx",
+      "parent": "/notifications"
     }
   }
 }

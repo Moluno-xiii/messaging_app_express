@@ -4,7 +4,10 @@
   --color-primary: #fe4a09;
   --color-secondary: #02001a;
   --color-background: #f1f1f1;
-  --color-foreground: #242424 /* --color-background: #333333; */;
+  --color-foreground: #242424;
+  --font-montserrat: "Montserrat", "system-ui, Avenir";
+  --font-roboto: "Roboto", "system-ui, Avenir";
+  /* --color-background: #333333; */
 }
 
 @layer utilities {
@@ -17,10 +20,13 @@
   .btn {
     @apply border-foreground hover:bg-foreground hover:text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200;
   }
+  .btn-param {
+    @apply bg-secondary text-background hover:bg-secondary/80 [&.active]:bg-primary rounded-md p-2 transition-all duration-200;
+  }
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-roboto);
   line-height: 1.5;
   font-weight: 400;
 

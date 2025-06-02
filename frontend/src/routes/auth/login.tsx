@@ -23,11 +23,12 @@ function RouteComponent() {
     };
     const { user, error, message } = await login(formBody);
     if (error) {
+      toast.error(error);
       throw new Error(error);
     } else {
       setUser(user);
       toast.success(message ?? "Login successful");
-      router.navigate({ to: "/", replace: true });
+      router.navigate({ to: "/chat", replace: true });
     }
   };
 
@@ -40,7 +41,7 @@ function RouteComponent() {
         <input
           required
           type="email"
-          className="border-foreground focus:border-primary min-w-sm rounded-xl border p-2 transition-all duration-200 outline-none"
+          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
           name="email"
           placeholder="$your_email@gmail.com"
         />
@@ -57,7 +58,7 @@ function RouteComponent() {
           minLength={6}
           type={showPassword ? "text" : "password"}
           name="password"
-          className="border-foreground focus:border-primary min-w-sm rounded-xl border p-2 transition-all duration-200 outline-none"
+          className="border-foreground focus:border-primary w-full rounded-xl border p-2 transition-all duration-200 outline-none md:min-w-sm"
         />
         {showPassword ? (
           <IoEyeOffOutline

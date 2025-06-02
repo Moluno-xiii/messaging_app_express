@@ -127,6 +127,39 @@ exports.Prisma.UserScalarFieldEnum = {
   hashed_password: 'hashed_password'
 };
 
+exports.Prisma.MessageScalarFieldEnum = {
+  id: 'id',
+  sender_id: 'sender_id',
+  receiver_id: 'receiver_id',
+  date_created: 'date_created',
+  date_updated: 'date_updated',
+  messge: 'messge'
+};
+
+exports.Prisma.FriendScalarFieldEnum = {
+  id: 'id',
+  userEmail: 'userEmail',
+  friendEmail: 'friendEmail',
+  status: 'status'
+};
+
+exports.Prisma.RequestScalarFieldEnum = {
+  id: 'id',
+  requesterEmail: 'requesterEmail',
+  requestedToEmail: 'requestedToEmail',
+  status: 'status',
+  dateSent: 'dateSent',
+  dateResponded: 'dateResponded'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  message: 'message',
+  email: 'email',
+  receivedAt: 'receivedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -136,10 +169,23 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+exports.Status = exports.$Enums.Status = {
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE'
+};
 
+exports.RequestStatus = exports.$Enums.RequestStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+};
 
 exports.Prisma.ModelName = {
-  user: 'user'
+  User: 'User',
+  Message: 'Message',
+  Friend: 'Friend',
+  Request: 'Request',
+  Notification: 'Notification'
 };
 
 /**

@@ -9,9 +9,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   const { user } = useAuth();
   return (
-    <div className="bg-background flex h-dvh flex-row gap-4 overflow-y-hidden p-6">
+    <div className="bg-background flex h-dvh w-dvw flex-row gap-4 overflow-y-hidden p-3 md:p-6">
       {user ? <Sidebar /> : null}
-      <main className="flex-1">
+      <main className="max-w-7xl flex-1 lg:mx-auto">
         <Outlet />
       </main>
     </div>

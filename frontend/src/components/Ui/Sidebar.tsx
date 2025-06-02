@@ -7,10 +7,11 @@ import type { LinkType } from "../../types";
 import { useState } from "react";
 import Modal from "./Modal";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "@tanstack/react-router";
 
 const navLinks: LinkType[] = [
   {
-    route: "/messages",
+    route: "/chat",
     component: <CiMail className="h-full w-full" />,
   },
   {
@@ -29,26 +30,32 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="bg-secondary text-primary flex min-h-full flex-col items-center justify-between rounded-xl px-5 py-6">
       <div>
-        <GiConvergenceTarget
-          size={30}
-          className="text-primary cursor-pointer transition-all duration-200 hover:rotate-180"
-        />
+        <Link to="/">
+          <GiConvergenceTarget
+            size={30}
+            className="text-primary cursor-pointer transition-all duration-200 hover:rotate-180"
+          />
+        </Link>
       </div>
       <ul className="flex flex-col items-center gap-y-6 text-white md:gap-y-14">
         {navLinks.map((link: LinkType) => (
-          <li
-            key={link.route}
-            className="hover:text-primary size-6 cursor-pointer duration-200"
-          >
-            {link.component}
+          <li key={link.route} className="size-6 duration-200">
+            <Link
+              to={link.route}
+              className="[&.active]:text-primary hover:text-primary text-white"
+            >
+              {link.component}
+            </Link>
           </li>
         ))}
       </ul>
       <div className="flex flex-col items-center gap-y-4 text-white">
-        <CiUser
-          size={24}
-          className="hover:text-primary cursor-pointer duration-200"
-        />
+        <Link
+          className="hover:text-primary [&.active]:text-primary cursor-pointer duration-200"
+          to="/profilie"
+        >
+          <CiUser size={24} />
+        </Link>
         <IoLogOutOutline
           onClick={() => setIsLogoutModalOpen(true)}
           size={24}

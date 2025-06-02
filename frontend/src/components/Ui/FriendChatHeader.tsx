@@ -2,21 +2,26 @@ import { CiSearch } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { IoCallOutline } from "react-icons/io5";
 import { PiDotsThreeBold } from "react-icons/pi";
-
-const FriendChatHeader: React.FC = () => {
-  const isOnline = true;
+interface PropTypes {
+  imageUrl: string;
+  name: string;
+  status: string;
+}
+const FriendChatHeader: React.FC<PropTypes> = ({ imageUrl, name, status }) => {
+  // const isOnline = true;
   return (
     <header className="flex flex-row items-center justify-between gap-4 rounded-xl bg-white p-4">
       <section className="flex flex-row items-center gap-x-2">
         <img
-          src="/profile-pic.jpeg"
+          src={imageUrl}
           alt="Friend's profile picture"
-          className={`size-12 rounded-full bg-cover ring-2 ring-offset-2 ${isOnline ? "ring-primary" : "ring-background"}`}
+          className={`size-12 rounded-full bg-cover ring-2 ring-offset-2 ${status === "online" ? "ring-primary" : "ring-background"}`}
         />
         <div>
-          <p className="font-semibold capitalize">Clinton Felix</p>
+          <p className="font-semibold capitalize">{name}</p>
           <span className="text-foreground/50 text-xs">
-            {isOnline ? "Online" : "Offline"}
+            {/* {isOnline ? "Online" : "Offline"} */}
+            {status}
           </span>
         </div>
       </section>

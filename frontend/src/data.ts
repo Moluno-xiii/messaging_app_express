@@ -127,6 +127,24 @@ const messages: Message[] = [
     timeSent: "5:28 PM",
     id: "4",
   },
+  {
+    senderId: "notmyId",
+    body: "  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum reiciendis cumque consequatur, sed placeat repellendus dignissimos distinctio libero natus! Vero, voluptatem? Debitis aliquam voluptatibus corrupti voluptas magnam reprehenderit veritatis eaque eos nesciunt sapiente?",
+    timeSent: "5:34 PM",
+    id: "5",
+  },
+  {
+    senderId: "myId",
+    body: "    Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro repudiandae temporibus voluptatum ut sit autem quae magnam soluta id adipisci, repellendus architecto magni accusamus provident?",
+    timeSent: "5:40 PM",
+    id: "6",
+  },
+  {
+    senderId: "myId",
+    body: "    Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro repudiandae temporibus voluptatum ut sit autem quae magnam soluta id adipisci, repellendus architecto magni accusamus provident?",
+    timeSent: "5:45 PM",
+    id: "7",
+  },
 ];
 
 export { chats, messages };

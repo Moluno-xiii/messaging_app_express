@@ -41,9 +41,9 @@ function RouteComponent() {
         <input
           required
           type="email"
-          className="border-foreground focus:border-primary min-w-sm rounded-xl border p-2 transition-all duration-200 outline-none"
+          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
           name="email"
-          placeholder="$your_emails@gmail.com"
+          placeholder="$your_email@gmail.com"
         />
       </div>
       <div className="relative flex flex-col gap-y-2">
@@ -58,7 +58,7 @@ function RouteComponent() {
           minLength={6}
           type="password"
           name="password"
-          className="border-foreground focus:border-primary min-w-sm rounded-xl border p-2 transition-all duration-200 outline-none"
+          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
         />
       </div>
       <div className="relative flex flex-col gap-y-2">
@@ -73,7 +73,7 @@ function RouteComponent() {
           minLength={6}
           type="password"
           name="confirmPassword"
-          className="border-foreground focus:border-primary min-w-sm rounded-xl border p-2 transition-all duration-200 outline-none"
+          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
         />
       </div>
       <button type="submit" className="btn-fill">

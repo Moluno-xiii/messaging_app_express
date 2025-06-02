@@ -15,7 +15,7 @@ const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
       );
       navigate({ to: "/auth/login", replace: true });
     }
-  }, [user]);
+  }, [user, navigate]);
 
   if (user === undefined) {
     return <Loading />;

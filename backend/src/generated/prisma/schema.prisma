@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -14,9 +8,76 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id              String   @id @default(uuid())
   date_created    DateTime @default(now())
   email           String   @unique
   hashed_password String
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  friendsInitiated Friend[] @relation("UserFriendsInitiated")
+  friendsReceived  Friend[] @relation("UserFriendsReceived")
+
+  RequestSent     Request[]      @relation("SentRequests")
+  RequestReceived Request[]      @relation("ReceivedRequests")
+  Notification    Notification[]
+}
+
+model Message {
+  id           String   @id @default(uuid())
+  sender_id    String
+  receiver_id  String
+  date_created DateTime @default(now())
+  date_updated DateTime @updatedAt
+  messge       String
+
+  sender   User @relation("SentMessages", fields: [sender_id], references: [email])
+  receiver User @relation("ReceivedMessages", fields: [receiver_id], references: [email])
+}
+
+model Friend {
+  id          String @id @default(uuid())
+  userEmail   String
+  friendEmail String
+  status      Status @default(OFFLINE)
+
+  user   User @relation("UserFriendsInitiated", fields: [userEmail], references: [email])
+  friend User @relation("UserFriendsReceived", fields: [friendEmail], references: [email])
+
+  @@unique([userEmail, friendEmail])
+}
+
+model Request {
+  id               String        @id @default(uuid())
+  requesterEmail   String
+  requestedToEmail String
+  status           RequestStatus @default(PENDING)
+  requester        User          @relation("SentRequests", fields: [requesterEmail], references: [email])
+  requestedTo      User          @relation("ReceivedRequests", fields: [requestedToEmail], references: [email])
+  dateSent         DateTime      @default(now())
+  dateResponded    DateTime      @updatedAt
+
+  @@unique([requesterEmail, requestedToEmail])
+}
+
+model Notification {
+  id         String   @id @default(uuid())
+  title      String
+  message    String
+  email      String
+  user       User     @relation(fields: [email], references: [email])
+  receivedAt DateTime @default(now())
+}
+
+enum Status {
+  ONLINE
+  OFFLINE
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }

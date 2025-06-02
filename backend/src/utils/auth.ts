@@ -82,6 +82,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     setCookies(res, accessToken, refreshToken);
     res.status(200).json({ message: "Login successful!", user });
   } catch (err) {
+    console.error("Login error from backend", err);
     const error = err instanceof Error ? err.message : "Unexpected error";
     res.status(500).json({ error });
   }
@@ -171,7 +172,9 @@ const findUserData = async (email: string): Promise<UserData> => {
     }
     return user;
   } catch (err) {
-    throw new Error("Something went wrong, try again.");
+    throw new Error(
+      err instanceof Error ? err.message : "Unexpected error occured"
+    );
   }
 };
 

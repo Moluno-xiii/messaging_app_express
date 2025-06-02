@@ -1,19 +1,24 @@
-import { createFileRoute } from "@tanstack/react-router";
-import ChatDetails from "../components/ChatDetails";
-import Chats from "../components/Chats";
-import ProtectedRoute from "../components/ProtectedRoute";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import useAuth from "../hooks/useAuth";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { user } = useAuth();
   return (
-    <ProtectedRoute>
-      <div className="flex h-full flex-row gap-x-4">
-        <Chats />
-        <ChatDetails />
-      </div>
-    </ProtectedRoute>
+    <div className="flex h-full w-full flex-col items-center justify-center gap-y-4">
+      <p>Chat application</p>
+      {user ? (
+        <Link to="/chat" className="btn-fill">
+          Continue
+        </Link>
+      ) : (
+        <Link to="/auth/login" className="btn-fill">
+          Login / Signup
+        </Link>
+      )}
+    </div>
   );
 }
