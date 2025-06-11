@@ -37,7 +37,7 @@ const sendEmail = async ({
   }
 };
 
-const verifyEmail = async (email: string, token: string) => {
+const sendVerificationEmail = async (email: string, token: string) => {
   return await sendEmail({
     to: email,
     subject: "Verify your email",
@@ -61,7 +61,7 @@ const verifyEmail = async (email: string, token: string) => {
   });
 };
 
-const resetPasswordEmail = async (email: string, token: string) => {
+const sendResetPasswordEmail = async (email: string, token: string) => {
   await sendEmail({
     to: email,
     subject: "Reset your password",
@@ -85,4 +85,4 @@ const resetPasswordEmail = async (email: string, token: string) => {
   });
 };
 
-export { verifyEmail, resetPasswordEmail };
+export { sendVerificationEmail, sendResetPasswordEmail };

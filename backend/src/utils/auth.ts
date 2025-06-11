@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { redisClient } from "../config/redis";
 import prisma from "../prisma";
+import { sendVerificationEmail } from "../config/emailService";
 
 interface UserData {
   hashedPassword: string;
@@ -10,7 +10,7 @@ interface UserData {
   id: string;
 }
 
-interface TokenData {
+interface SessionTokenData {
   email: string;
   id: string;
   sessionId: string;
@@ -18,142 +18,19 @@ interface TokenData {
   exp: number;
 }
 
-const signUp = async (req: Request, res: Response, next: NextFunction) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+interface TokenData {
+  iat: number;
+  exp: number;
+  hashedPassword: string;
+  email: string;
+}
 
-  try {
-    await prisma.user.create({
-      data: {
-        email: req.body.email,
-        hashedPassword,
-      },
-    });
-    res.status(200).json({
-      message: "SignUp successful",
-    });
-  } catch (err: unknown) {
-    if (
-      (err as any).code === "P2002" &&
-      (err as any).meta?.target?.includes("email")
-    ) {
-      res.status(409).json({ error: "Email already exists!" });
-      return;
-    }
-    res.status(500).json({ error: "Unexpected error, try again." });
-  }
-};
-
-const login = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    res.status(400).json({ error: "Missing credentials" });
-    return;
-  }
-
-  try {
-    const user = await findUserData(req.body.email);
-    const isPasswordCorrect = await bcrypt.compare(
-      req.body.password,
-      user.hashedPassword
-    );
-
-    if (!isPasswordCorrect) {
-      res.status(401).json({
-        error:
-          "Incorrect credentials. \n Note : both fields are case sensitive",
-      });
-      return;
-    }
-
-    const sessionId = crypto.randomUUID();
-    const { accessToken, refreshToken } = generateTokens(
-      email,
-      user.id,
-      sessionId
-    );
-
-    await redisClient.setEx(
-      `session:${sessionId}`,
-      15 * 24 * 60 * 60,
-      refreshToken
-    );
-
-    setCookies(res, accessToken, refreshToken);
-    res.status(200).json({ message: "Login successful!", user });
-  } catch (err) {
-    const error = err instanceof Error ? err.message : "Unexpected error";
-    res.status(500).json({ error });
-  }
-};
-
-const refresh = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { refreshToken } = req.cookies;
-
-    if (!refreshToken) {
-      res
-        .status(401)
-        .json({ error: "No refresh token, refresh token required." });
-      return;
-    }
-
-    const decoded = verifyToken(refreshToken, res);
-    if (!decoded) {
-      res.status(401).json("Invalid refresh token");
-      return;
-    }
-    const { sessionId, email, id } = decoded;
-    const storedToken = await redisClient.get(`session:${sessionId}`);
-
-    if (refreshToken !== storedToken) {
-      res.status(401).json({ error: "Invalid refresh token, log user out" });
-      return;
-    }
-
-    if (!storedToken) {
-      res.status(401).json({ error: "Invalid token" });
-      return;
-    }
-
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
-      email,
-      id,
-      sessionId
-    );
-
-    await redisClient.del(`session:${sessionId}`);
-    await redisClient.setEx(
-      `session:${sessionId}`,
-      15 * 24 * 60 * 60,
-      newRefreshToken
-    );
-
-    setCookies(res, accessToken, newRefreshToken);
-    res.json({ message: "Cookies refreshed successfully!" });
-    return;
-  } catch (err) {
-    res.status(500).json({ error: "An unexpected error occured" });
-  }
-};
-
-const verifyToken = (token: string, res: Response) => {
+const verifySessionToken = (token: string, res: Response) => {
   try {
     const data = jwt.verify(token, process.env.TOKEN_SECRET as string);
-    return data as TokenData;
+    return data as SessionTokenData;
   } catch (err) {
     return null;
-  }
-};
-
-const logout = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    await redisClient.del(`session:${req.body.sessionId}`);
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
-    res.status(200).json({ message: "Logout successful!" });
-  } catch (err: unknown) {
-    res.status(500).json({ error: "An unexpected error occured, try again." });
   }
 };
 
@@ -221,4 +98,87 @@ const setCookies = (
   });
 };
 
-export { login, logout, refresh, signUp, verifyToken };
+const createTemporaryUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await checkIfUserExists(res, req);
+
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const token = generateTemporaryToken(email, hashedPassword);
+    const temporaryUser = await prisma.temporaryUser.upsert({
+      where: { email },
+      update: {
+        hashedPassword,
+      },
+      create: {
+        email,
+        hashedPassword,
+      },
+    });
+    console.log("temporary created user :  ", temporaryUser);
+    await sendVerificationEmail(email, token);
+    return res.status(200).json({
+      message: "Check your email to verify your email.",
+      success: true,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "unexpected error", success: false, error });
+  }
+};
+
+const checkIfUserExists = async (res: Response, req: Request) => {
+  try {
+    const doesUserEmailExist = await prisma.user.count({
+      where: {
+        email: req.body.email ?? "",
+      },
+    });
+
+    if (doesUserEmailExist > 0) {
+      return res.status(409).json({
+        message: "Email already exists!",
+        success: false,
+      });
+    }
+    return;
+  } catch (error) {
+    res.status(500).json({ message: "Unexpected error", success: false });
+  }
+};
+
+const generateTemporaryToken = (email: string, hashedPassword: string) => {
+  const token = jwt.sign(
+    {
+      email,
+      hashedPassword,
+    },
+    process.env.TOKEN_SECRET as string,
+    { expiresIn: "45m" }
+  );
+
+  return token;
+};
+
+const verifyToken = (token: string, res: Response) => {
+  try {
+    const decryptedData = jwt.verify(token, process.env.TOKEN_SECRET as string);
+    console.log("decrypted token data ", decryptedData);
+    return decryptedData as TokenData;
+  } catch (err) {
+    return null;
+  }
+};
+export {
+  createTemporaryUser,
+  findUserData,
+  generateTokens,
+  setCookies,
+  verifySessionToken,
+  verifyToken,
+};

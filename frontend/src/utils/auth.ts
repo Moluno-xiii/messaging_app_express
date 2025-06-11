@@ -67,13 +67,12 @@ const signup = async (formData: {
 const testSignup = async (formData: {
   email: string;
   password: string;
-  confirmPassword: string;
 }): Promise<{
   success: boolean;
   message: string;
 }> => {
   try {
-    const query = await fetch("http://localhost:7002/auth/test-signup", {
+    const query = await fetch("http://localhost:7002/auth/signup", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -104,13 +103,50 @@ const forgotPassword = async (email: string) => {
       body: JSON.stringify({ email }),
     });
     const response = await request.json();
-    console.log("response from forgot password endpoint : ", response);
     return response;
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Unexpected error, try again.";
-    console.error("errror while requesting forgot password route: ", error);
     return { success: false, message };
   }
 };
-export { login, signup, testSignup, forgotPassword };
+
+const verifyToken = async (token: string) => {
+  try {
+    const request = await fetch("http://localhost:7002/auth/verify-email", {
+      method: "POST",
+      body: JSON.stringify({ token }),
+      headers: {
+        "Content-Type": "Application/Json",
+      },
+    });
+    const response = await request.json();
+    return response;
+  } catch {
+    return { success: false, message: "Unexpected error, try again." };
+  }
+};
+
+const resetPassword = async (data: { token: string; password: string }) => {
+  try {
+    const request = await fetch("http://localhost:7002/auth/reset-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/Json",
+      },
+      body: JSON.stringify(data),
+    });
+    const response = await request.json();
+    return response;
+  } catch {
+    toast.error("An unexpected error occured, try again.");
+  }
+};
+export {
+  login,
+  signup,
+  testSignup,
+  forgotPassword,
+  verifyToken,
+  resetPassword,
+};

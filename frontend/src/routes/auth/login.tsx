@@ -1,20 +1,18 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { PasswordInput } from "../../components/Ui/Input";
 import useAuth from "../../hooks/useAuth";
 import { login } from "../../utils/auth";
-import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/login")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setUser, user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
@@ -37,6 +35,8 @@ function RouteComponent() {
     }
   };
 
+  const isDisabled = isLoading || user ? true : false;
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
       <div className="flex flex-col gap-y-2">
@@ -45,39 +45,27 @@ function RouteComponent() {
         </label>
         <input
           required
+          disabled={isDisabled}
           type="email"
-          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
+          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none disabled:cursor-not-allowed max-sm:w-xs md:min-w-sm"
           name="email"
           placeholder="$your_email@gmail.com"
         />
       </div>
-      <div className="relative flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2">
         <label
           htmlFor="password"
           className="text-primary text-base font-semibold"
         >
           Password
         </label>
-        <input
-          required
-          minLength={6}
-          type={showPassword ? "text" : "password"}
-          name="password"
-          className="border-foreground focus:border-primary w-full rounded-xl border p-2 transition-all duration-200 outline-none md:min-w-sm"
-        />
-        {showPassword ? (
-          <IoEyeOffOutline
-            className="hover:text-primary absolute right-2 bottom-3 cursor-pointer transition-all duration-300"
-            onClick={() => setShowPassword(false)}
-          />
-        ) : (
-          <IoEyeOutline
-            className="hover:text-primary absolute right-2 bottom-3 cursor-pointer transition-all duration-300"
-            onClick={() => setShowPassword(true)}
-          />
-        )}
+        <PasswordInput name="password" isDisabled={isDisabled} />
       </div>
-      <button type="submit" className="btn-fill disabled:cursor-not-allowed">
+      <button
+        disabled={isDisabled}
+        type="submit"
+        className="btn-fill disabled:cursor-not-allowed"
+      >
         {isLoading ? "Logging in..." : "       Login"}
       </button>
       <Link

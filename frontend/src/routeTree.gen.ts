@@ -18,7 +18,6 @@ import { Route as SettingsIndexImport } from './routes/settings/index'
 import { Route as ProfileIndexImport } from './routes/profile/index'
 import { Route as ChatIndexImport } from './routes/chat/index'
 import { Route as AuthVerifyEmailImport } from './routes/auth/verify-email'
-import { Route as AuthTestSignupImport } from './routes/auth/test-signup'
 import { Route as AuthSignupImport } from './routes/auth/signup'
 import { Route as AuthResetPasswordImport } from './routes/auth/reset-password'
 import { Route as AuthLoginImport } from './routes/auth/login'
@@ -67,12 +66,6 @@ const ChatIndexRoute = ChatIndexImport.update({
 const AuthVerifyEmailRoute = AuthVerifyEmailImport.update({
   id: '/verify-email',
   path: '/verify-email',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
-
-const AuthTestSignupRoute = AuthTestSignupImport.update({
-  id: '/test-signup',
-  path: '/test-signup',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
@@ -166,13 +159,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupImport
       parentRoute: typeof AuthRouteImport
     }
-    '/auth/test-signup': {
-      id: '/auth/test-signup'
-      path: '/test-signup'
-      fullPath: '/auth/test-signup'
-      preLoaderRoute: typeof AuthTestSignupImport
-      parentRoute: typeof AuthRouteImport
-    }
     '/auth/verify-email': {
       id: '/auth/verify-email'
       path: '/verify-email'
@@ -225,7 +211,6 @@ interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignupRoute: typeof AuthSignupRoute
-  AuthTestSignupRoute: typeof AuthTestSignupRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
 }
 
@@ -234,7 +219,6 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignupRoute: AuthSignupRoute,
-  AuthTestSignupRoute: AuthTestSignupRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
 }
 
@@ -263,7 +247,6 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/auth/test-signup': typeof AuthTestSignupRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/chat': typeof ChatIndexRoute
   '/profile': typeof ProfileIndexRoute
@@ -280,7 +263,6 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/auth/test-signup': typeof AuthTestSignupRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/chat': typeof ChatIndexRoute
   '/profile': typeof ProfileIndexRoute
@@ -298,7 +280,6 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/auth/test-signup': typeof AuthTestSignupRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/chat/': typeof ChatIndexRoute
   '/profile/': typeof ProfileIndexRoute
@@ -317,7 +298,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset-password'
     | '/auth/signup'
-    | '/auth/test-signup'
     | '/auth/verify-email'
     | '/chat'
     | '/profile'
@@ -333,7 +313,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset-password'
     | '/auth/signup'
-    | '/auth/test-signup'
     | '/auth/verify-email'
     | '/chat'
     | '/profile'
@@ -349,7 +328,6 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset-password'
     | '/auth/signup'
-    | '/auth/test-signup'
     | '/auth/verify-email'
     | '/chat/'
     | '/profile/'
@@ -405,7 +383,6 @@ export const routeTree = rootRoute
         "/auth/login",
         "/auth/reset-password",
         "/auth/signup",
-        "/auth/test-signup",
         "/auth/verify-email"
       ]
     },
@@ -430,10 +407,6 @@ export const routeTree = rootRoute
     },
     "/auth/signup": {
       "filePath": "auth/signup.tsx",
-      "parent": "/auth"
-    },
-    "/auth/test-signup": {
-      "filePath": "auth/test-signup.tsx",
       "parent": "/auth"
     },
     "/auth/verify-email": {

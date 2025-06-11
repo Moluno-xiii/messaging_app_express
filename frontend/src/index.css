@@ -12,16 +12,16 @@
 
 @layer utilities {
   .btn-fill {
-    @apply border-primary hover:bg-primary/70 bg-primary text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200;
+    @apply border-primary hover:bg-primary/70 bg-primary text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200 disabled:cursor-not-allowed;
   }
   .btn-error {
-    @apply text-background cursor-pointer rounded-3xl border border-red-600 bg-red-600 px-5 py-2 transition-all duration-200 hover:bg-red-600/70;
+    @apply text-background cursor-pointer rounded-3xl border border-red-600 bg-red-600 px-5 py-2 transition-all duration-200 hover:bg-red-600/70 disabled:cursor-not-allowed;
   }
   .btn {
-    @apply border-foreground hover:bg-foreground hover:text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200;
+    @apply border-foreground hover:bg-foreground hover:text-background cursor-pointer rounded-3xl border px-5 py-2 transition-all duration-200 disabled:cursor-not-allowed;
   }
   .btn-param {
-    @apply bg-secondary text-background hover:bg-secondary/80 [&.active]:bg-primary rounded-md p-2 transition-all duration-200;
+    @apply bg-secondary text-background hover:bg-secondary/80 [&.active]:bg-primary divide-current rounded-md p-2 transition-all duration-200 disabled:cursor-not-allowed;
   }
 }
 

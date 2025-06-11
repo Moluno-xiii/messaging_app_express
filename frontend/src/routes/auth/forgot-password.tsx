@@ -14,7 +14,6 @@ function RouteComponent() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
-    // when otp is inputed, check database if user exists, if not, throw an error saying email isn't registered.
     try {
       setIsPending(true);
       const { message, success } = await forgotPassword(data.email as string);
@@ -44,7 +43,7 @@ function RouteComponent() {
           placeholder="$your_email@gmail.com"
         />
       </div>
-      <button type="submit" className="btn-fill">
+      <button disabled={isPending} type="submit" className="btn-fill">
         {isPending ? "Submitting..." : " Submit"}
       </button>
     </form>

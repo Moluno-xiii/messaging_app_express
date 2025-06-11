@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { verifyToken } from "../utils/auth";
+import { verifySessionToken } from "../utils/auth";
 
 async function verifyJwt(req: Request, res: Response, next: NextFunction) {
   const { accessToken, refreshToken } = req.cookies;
@@ -20,7 +20,7 @@ async function verifyJwt(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = verifyToken(accessToken, res);
+    const decoded = verifySessionToken(accessToken, res);
     if (!decoded) {
       res
         .status(401)

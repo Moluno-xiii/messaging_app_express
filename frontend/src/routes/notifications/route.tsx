@@ -28,7 +28,10 @@ function RouteComponent() {
   const routerState = useRouterState();
   const navigate = useNavigate();
   useEffect(() => {
-    if (routerState.location.pathname === "/notifications") {
+    if (
+      routerState.location.pathname === "/notifications" ||
+      routerState.location.pathname === "/notifications/"
+    ) {
       navigate({
         to: "/notifications/friend-requests",
         search: { type: "sent" },

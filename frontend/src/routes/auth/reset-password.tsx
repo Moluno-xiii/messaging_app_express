@@ -5,6 +5,9 @@ import {
 } from "@tanstack/react-router";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { PasswordInput } from "../../components/Ui/Input";
+import useAuth from "../../hooks/useAuth";
+import { resetPassword } from "../../utils/auth";
 
 export const Route = createFileRoute("/auth/reset-password")({
   component: RouteComponent,
@@ -17,8 +20,10 @@ export const Route = createFileRoute("/auth/reset-password")({
 
 function RouteComponent() {
   const { token } = useSearch({ from: Route.id });
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     event.preventDefault();
@@ -28,16 +33,22 @@ function RouteComponent() {
       password: string;
       confirmPassword?: string;
     };
+
     if (data.password !== data.confirmPassword) {
       toast.error("Password fields do not match.");
       setIsLoading(false);
       return;
     }
-    // if (data.otp.length < 4 || data.otp.length > 4) {
-    //   toast.error("OTP length must be 4");
-    // }
+
+    if (!token) {
+      toast.error("Invalid link, click on the link sent to your email.");
+      setIsLoading(false);
+      return;
+    }
+
     delete data.confirmPassword;
     const finalData = { ...data, token } as { token: string; password: string };
+
     try {
       const { message, success } = await resetPassword(finalData);
       if (!success) {
@@ -55,41 +66,10 @@ function RouteComponent() {
     }
   };
 
-  const resetPassword = async (data: { token: string; password: string }) => {
-    try {
-      const request = await fetch("http://localhost:7002/auth/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "Application/Json",
-        },
-        body: JSON.stringify(data),
-      });
-      const response = await request.json();
-      console.log("response from reset password endpoint : ", response);
-      return response;
-    } catch (error) {
-      toast.error("An unexpected error occured, try again.");
-      console.error(error, "message from reset password");
-    }
-  };
+  const isDisabled = isLoading || !token || user ? true : false;
 
-  // const handleResetOTP = () => {
-  //   console.log("OTP resent");
-  //   toast.success(`OTP sent successfully to ${email}`);
-  // };
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
-      {/* <div className="flex flex-col gap-y-2">
-        <label className="text-primary text-base font-semibold" htmlFor="otp">
-          Enter OTP sent to your email
-        </label>
-        <input
-          required
-          type="number"
-          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
-          name="otp"
-        />
-      </div> */}
       <div className="relative flex flex-col gap-y-2">
         <label
           htmlFor="password"
@@ -97,13 +77,7 @@ function RouteComponent() {
         >
           New password
         </label>
-        <input
-          required
-          minLength={6}
-          type="password"
-          name="password"
-          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
-        />
+        <PasswordInput name="password" isDisabled={isDisabled} />
       </div>
       <div className="relative flex flex-col gap-y-2">
         <label
@@ -112,27 +86,12 @@ function RouteComponent() {
         >
           Confirm new Password
         </label>
-        <input
-          required
-          minLength={6}
-          type="password"
-          name="confirmPassword"
-          className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
-        />
+        <PasswordInput name="confirmPassword" isDisabled={isDisabled} />
       </div>
 
-      <button disabled={isLoading} type="submit" className="btn-fill">
+      <button disabled={isDisabled} type="submit" className="btn-fill">
         {isLoading ? "Resetting password..." : "Reset password"}
       </button>
-
-      {/* {email ? (
-        <div>
-          <span>Didn't receive email?</span>
-          <button type="button" onClick={handleResetOTP} className="btn-fill">
-            Resend OTP
-          </button>
-        </div>
-      ) : null} */}
     </form>
   );
 }

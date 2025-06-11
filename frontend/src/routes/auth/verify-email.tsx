@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { verifyToken } from "../../utils/auth";
 
 export const Route = createFileRoute("/auth/verify-email")({
   component: RouteComponent,
@@ -15,23 +16,6 @@ export const Route = createFileRoute("/auth/verify-email")({
     };
   },
 });
-
-const handleVerifyToken = async (token: string) => {
-  try {
-    const request = await fetch("http://localhost:7002/auth/verify-email", {
-      method: "POST",
-      body: JSON.stringify({ token }),
-      headers: {
-        "Content-Type": "Application/Json",
-      },
-    });
-    const response = await request.json();
-    console.log("response, from verifying email : ", response);
-    return response;
-  } catch (error: unknown) {
-    console.error("Error occured while verifying email :", error);
-  }
-};
 
 function RouteComponent() {
   const { token } = useSearch({ from: Route.id });
@@ -45,7 +29,7 @@ function RouteComponent() {
     }
     (async () => {
       try {
-        const response = await handleVerifyToken(token);
+        const response = await verifyToken(token);
         if (response.success) {
           toast.success(response.message);
           navigate({ to: "/auth/login" });
