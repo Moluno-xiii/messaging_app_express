@@ -1,6 +1,13 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
 import useAuth from "../../hooks/useAuth";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/auth")({
   component: RouteComponent,
@@ -8,6 +15,19 @@ export const Route = createFileRoute("/auth")({
 
 function RouteComponent() {
   const { user } = useAuth();
+  const routerState = useRouterState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (
+      routerState.location.pathname === "/auth" ||
+      routerState.location.pathname === "/auth/"
+    ) {
+      navigate({
+        to: "/auth/signup",
+        replace: true,
+      });
+    }
+  }, [routerState.location.pathname, navigate]);
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-y-4 md:gap-y-7">
       <div className="flex flex-row items-center gap-x-3">
@@ -25,6 +45,7 @@ function RouteComponent() {
         </Link>
       </div>
       <Outlet />
+
       {user ? (
         <div className="flex flex-col gap-y-2">
           <span className="italic">Welcome back, {user.email}</span>

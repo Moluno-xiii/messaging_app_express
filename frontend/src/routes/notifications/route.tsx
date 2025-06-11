@@ -38,7 +38,7 @@ function RouteComponent() {
   }, [routerState.location.pathname, navigate]);
   return (
     <ProtectedRoute>
-      <div className="flex flex-col gap-y-5">
+      <div className="flex h-full w-full flex-col gap-y-5">
         <ul className="flex flex-row items-center gap-x-4">
           {notificationLinks.map((link) => (
             <li key={link.route}>

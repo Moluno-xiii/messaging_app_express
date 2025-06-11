@@ -52,7 +52,7 @@ const Sidebar: React.FC = () => {
       <div className="flex flex-col items-center gap-y-4 text-white">
         <Link
           className="hover:text-primary [&.active]:text-primary cursor-pointer duration-200"
-          to="/profilie"
+          to="/profile"
         >
           <CiUser size={24} />
         </Link>

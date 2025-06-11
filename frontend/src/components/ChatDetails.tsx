@@ -19,8 +19,8 @@ const ChatDetails: React.FC<PropTypes> = ({ selectedFriend }) => {
 
   if (!selectedFriend)
     return (
-      <div className="text-primary mx-auto flex max-w-sm items-center justify-center text-center text-xl md:text-2xl">
-        No selected friend, select a friend to view your chat history with them.
+      <div className="text-primary mx-auto flex max-w-sm min-w-sm items-center justify-center text-center text-xl md:text-2xl">
+        Select a chat to view.
       </div>
     );
   if (isPending) return <Loading />;

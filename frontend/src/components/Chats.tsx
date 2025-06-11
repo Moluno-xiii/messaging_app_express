@@ -16,9 +16,8 @@ const Chats: React.FC<PropTypes> = ({ setSelectedFriend }) => {
 
   if (isPending) return <Loading />;
   if (error) return <ErrorMessage message={error.message} />;
-  console.log("User friends data", friends);
   return (
-    <section className="scrollbar-none flex h-full max-w-[390px] flex-col gap-y-2 overflow-y-scroll">
+    <section className="scrollbar-none flex h-full max-w-[390px] min-w-sm flex-col gap-y-2 overflow-y-scroll">
       <ChatsHeader />
       <ul className="scrollbar-none flex h-full flex-1 flex-col overflow-y-scroll rounded-xl bg-white p-4">
         <div className="text-primary flex flex-row items-center justify-between">

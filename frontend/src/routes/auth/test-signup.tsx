@@ -2,16 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { testSignup } from "../../utils/auth";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
-export const Route = createFileRoute("/auth/signup")({
+export const Route = createFileRoute("/auth/test-signup")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPasswordField, setShowPasswordField] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
@@ -34,9 +31,9 @@ function RouteComponent() {
       toast.error(message);
       setIsLoading(false);
     } else {
-      event.currentTarget.reset();
       toast.success(message);
       setIsLoading(false);
+      event.currentTarget.reset();
     }
   };
 
@@ -64,17 +61,10 @@ function RouteComponent() {
         <input
           required
           minLength={6}
-          type={showPasswordField ? "text" : "password"}
+          type="password"
           name="password"
           className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
         />
-        <div className="absolute right-2 bottom-3">
-          {showPasswordField ? (
-            <IoEyeOffOutline onClick={() => setShowPasswordField(false)} />
-          ) : (
-            <IoEyeOutline onClick={() => setShowPasswordField(true)} />
-          )}
-        </div>
       </div>
       <div className="relative flex flex-col gap-y-2">
         <label
@@ -86,17 +76,10 @@ function RouteComponent() {
         <input
           required
           minLength={6}
-          type={showConfirmPassword ? "text" : "password"}
+          type="password"
           name="confirmPassword"
           className="border-foreground focus:border-primary rounded-xl border p-2 transition-all duration-200 outline-none max-sm:w-xs md:min-w-sm"
         />
-        <div className="absolute right-2 bottom-3">
-          {showConfirmPassword ? (
-            <IoEyeOffOutline onClick={() => setShowConfirmPassword(false)} />
-          ) : (
-            <IoEyeOutline onClick={() => setShowConfirmPassword(true)} />
-          )}
-        </div>
       </div>
       <button
         disabled={isLoading}
@@ -111,13 +94,13 @@ function RouteComponent() {
       >
         Forgot password?
       </Link>
-      {/* <Link
+      <Link
         className="text-primary hover:text-primary/70 transition-all duration-200 hover:underline"
         to={"/auth/verify-email"}
         search={{ token: "20302502u02u20u2wlgwo" }}
       >
         Verify email
-      </Link> */}
+      </Link>
     </form>
   );
 }

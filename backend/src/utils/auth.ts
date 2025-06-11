@@ -5,7 +5,7 @@ import { redisClient } from "../config/redis";
 import prisma from "../prisma";
 
 interface UserData {
-  hashed_password: string;
+  hashedPassword: string;
   email: string;
   id: string;
 }
@@ -19,13 +19,13 @@ interface TokenData {
 }
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
-  const hashed_password = await bcrypt.hash(req.body.password, 10);
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   try {
     await prisma.user.create({
       data: {
         email: req.body.email,
-        hashed_password,
+        hashedPassword,
       },
     });
     res.status(200).json({
@@ -55,7 +55,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const user = await findUserData(req.body.email);
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
-      user.hashed_password
+      user.hashedPassword
     );
 
     if (!isPasswordCorrect) {
@@ -82,7 +82,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     setCookies(res, accessToken, refreshToken);
     res.status(200).json({ message: "Login successful!", user });
   } catch (err) {
-    console.error("Login error from backend", err);
     const error = err instanceof Error ? err.message : "Unexpected error";
     res.status(500).json({ error });
   }

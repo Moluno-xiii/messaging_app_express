@@ -15,10 +15,14 @@ import { Route as NotificationsRouteImport } from './routes/notifications/route'
 import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as SettingsIndexImport } from './routes/settings/index'
-import { Route as ProfilieIndexImport } from './routes/profilie/index'
+import { Route as ProfileIndexImport } from './routes/profile/index'
 import { Route as ChatIndexImport } from './routes/chat/index'
+import { Route as AuthVerifyEmailImport } from './routes/auth/verify-email'
+import { Route as AuthTestSignupImport } from './routes/auth/test-signup'
 import { Route as AuthSignupImport } from './routes/auth/signup'
+import { Route as AuthResetPasswordImport } from './routes/auth/reset-password'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AuthForgotPasswordImport } from './routes/auth/forgot-password'
 import { Route as NotificationsOthersIndexImport } from './routes/notifications/others/index'
 import { Route as NotificationsFriendRequestsIndexImport } from './routes/notifications/friend-requests/index'
 
@@ -48,9 +52,9 @@ const SettingsIndexRoute = SettingsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProfilieIndexRoute = ProfilieIndexImport.update({
-  id: '/profilie/',
-  path: '/profilie/',
+const ProfileIndexRoute = ProfileIndexImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,15 +64,39 @@ const ChatIndexRoute = ChatIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthVerifyEmailRoute = AuthVerifyEmailImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthTestSignupRoute = AuthTestSignupImport.update({
+  id: '/test-signup',
+  path: '/test-signup',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
 const AuthSignupRoute = AuthSignupImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
+const AuthResetPasswordRoute = AuthResetPasswordImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
@@ -110,11 +138,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRoute
     }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordImport
+      parentRoute: typeof AuthRouteImport
+    }
     '/auth/login': {
       id: '/auth/login'
       path: '/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordImport
       parentRoute: typeof AuthRouteImport
     }
     '/auth/signup': {
@@ -124,6 +166,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupImport
       parentRoute: typeof AuthRouteImport
     }
+    '/auth/test-signup': {
+      id: '/auth/test-signup'
+      path: '/test-signup'
+      fullPath: '/auth/test-signup'
+      preLoaderRoute: typeof AuthTestSignupImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/auth/verify-email': {
+      id: '/auth/verify-email'
+      path: '/verify-email'
+      fullPath: '/auth/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailImport
+      parentRoute: typeof AuthRouteImport
+    }
     '/chat/': {
       id: '/chat/'
       path: '/chat'
@@ -131,11 +187,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatIndexImport
       parentRoute: typeof rootRoute
     }
-    '/profilie/': {
-      id: '/profilie/'
-      path: '/profilie'
-      fullPath: '/profilie'
-      preLoaderRoute: typeof ProfilieIndexImport
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexImport
       parentRoute: typeof rootRoute
     }
     '/settings/': {
@@ -165,13 +221,21 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthRouteRouteChildren {
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignupRoute: typeof AuthSignupRoute
+  AuthTestSignupRoute: typeof AuthTestSignupRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignupRoute: AuthSignupRoute,
+  AuthTestSignupRoute: AuthTestSignupRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
@@ -195,10 +259,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/notifications': typeof NotificationsRouteRouteWithChildren
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/auth/test-signup': typeof AuthTestSignupRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/chat': typeof ChatIndexRoute
-  '/profilie': typeof ProfilieIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/notifications/friend-requests': typeof NotificationsFriendRequestsIndexRoute
   '/notifications/others': typeof NotificationsOthersIndexRoute
@@ -208,10 +276,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/notifications': typeof NotificationsRouteRouteWithChildren
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/auth/test-signup': typeof AuthTestSignupRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/chat': typeof ChatIndexRoute
-  '/profilie': typeof ProfilieIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/notifications/friend-requests': typeof NotificationsFriendRequestsIndexRoute
   '/notifications/others': typeof NotificationsOthersIndexRoute
@@ -222,10 +294,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/notifications': typeof NotificationsRouteRouteWithChildren
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/auth/test-signup': typeof AuthTestSignupRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/chat/': typeof ChatIndexRoute
-  '/profilie/': typeof ProfilieIndexRoute
+  '/profile/': typeof ProfileIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/notifications/friend-requests/': typeof NotificationsFriendRequestsIndexRoute
   '/notifications/others/': typeof NotificationsOthersIndexRoute
@@ -237,10 +313,14 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/notifications'
+    | '/auth/forgot-password'
     | '/auth/login'
+    | '/auth/reset-password'
     | '/auth/signup'
+    | '/auth/test-signup'
+    | '/auth/verify-email'
     | '/chat'
-    | '/profilie'
+    | '/profile'
     | '/settings'
     | '/notifications/friend-requests'
     | '/notifications/others'
@@ -249,10 +329,14 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/notifications'
+    | '/auth/forgot-password'
     | '/auth/login'
+    | '/auth/reset-password'
     | '/auth/signup'
+    | '/auth/test-signup'
+    | '/auth/verify-email'
     | '/chat'
-    | '/profilie'
+    | '/profile'
     | '/settings'
     | '/notifications/friend-requests'
     | '/notifications/others'
@@ -261,10 +345,14 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/notifications'
+    | '/auth/forgot-password'
     | '/auth/login'
+    | '/auth/reset-password'
     | '/auth/signup'
+    | '/auth/test-signup'
+    | '/auth/verify-email'
     | '/chat/'
-    | '/profilie/'
+    | '/profile/'
     | '/settings/'
     | '/notifications/friend-requests/'
     | '/notifications/others/'
@@ -276,7 +364,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   NotificationsRouteRoute: typeof NotificationsRouteRouteWithChildren
   ChatIndexRoute: typeof ChatIndexRoute
-  ProfilieIndexRoute: typeof ProfilieIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
 }
 
@@ -285,7 +373,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   NotificationsRouteRoute: NotificationsRouteRouteWithChildren,
   ChatIndexRoute: ChatIndexRoute,
-  ProfilieIndexRoute: ProfilieIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   SettingsIndexRoute: SettingsIndexRoute,
 }
 
@@ -303,7 +391,7 @@ export const routeTree = rootRoute
         "/auth",
         "/notifications",
         "/chat/",
-        "/profilie/",
+        "/profile/",
         "/settings/"
       ]
     },
@@ -313,8 +401,12 @@ export const routeTree = rootRoute
     "/auth": {
       "filePath": "auth/route.tsx",
       "children": [
+        "/auth/forgot-password",
         "/auth/login",
-        "/auth/signup"
+        "/auth/reset-password",
+        "/auth/signup",
+        "/auth/test-signup",
+        "/auth/verify-email"
       ]
     },
     "/notifications": {
@@ -324,19 +416,35 @@ export const routeTree = rootRoute
         "/notifications/others/"
       ]
     },
+    "/auth/forgot-password": {
+      "filePath": "auth/forgot-password.tsx",
+      "parent": "/auth"
+    },
     "/auth/login": {
       "filePath": "auth/login.tsx",
+      "parent": "/auth"
+    },
+    "/auth/reset-password": {
+      "filePath": "auth/reset-password.tsx",
       "parent": "/auth"
     },
     "/auth/signup": {
       "filePath": "auth/signup.tsx",
       "parent": "/auth"
     },
+    "/auth/test-signup": {
+      "filePath": "auth/test-signup.tsx",
+      "parent": "/auth"
+    },
+    "/auth/verify-email": {
+      "filePath": "auth/verify-email.tsx",
+      "parent": "/auth"
+    },
     "/chat/": {
       "filePath": "chat/index.tsx"
     },
-    "/profilie/": {
-      "filePath": "profilie/index.tsx"
+    "/profile/": {
+      "filePath": "profile/index.tsx"
     },
     "/settings/": {
       "filePath": "settings/index.tsx"

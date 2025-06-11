@@ -12,12 +12,12 @@ messagesRoute.get(
         where: {
           OR: [
             {
-              sender_id: req.user?.email,
-              receiver_id: req.params.friendEmail,
+              senderId: req.user?.email,
+              receiverId: req.params.friendEmail,
             },
             {
-              sender_id: req.params.friendEmail,
-              receiver_id: req.user?.email,
+              senderId: req.params.friendEmail,
+              receiverId: req.user?.email,
             },
           ],
         },
@@ -39,9 +39,9 @@ messagesRoute.post(
     try {
       const message = await prisma.message.create({
         data: {
-          sender_id: req.user?.email as string,
-          receiver_id: req.params.friendEmail,
-          messge: req.body.message,
+          senderId: req.user?.email as string,
+          receiverId: req.params.friendEmail,
+          mesasge: req.body.message,
         },
       });
       res.status(200).json({
@@ -62,8 +62,8 @@ messagesRoute.delete(
     try {
       const message = await prisma.message.delete({
         where: {
-          sender_id: req.user?.id as string,
-          receiver_id: userId,
+          senderId: req.user?.id as string,
+          receiverId: userId,
           id: messageId,
         },
       });

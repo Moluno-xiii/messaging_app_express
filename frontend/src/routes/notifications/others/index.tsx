@@ -15,14 +15,20 @@ function RouteComponent() {
   if (isLoading) return <Loading />;
 
   return (
-    <div>
-      <ul>
-        {notifications.data.map((notification: Notification) => (
-          <li key={notification.id}>
-            <p className="text-xl">{notification.title}</p>
-            <p>{notification.message}</p>
-          </li>
-        ))}
+    <div className="h-full w-full">
+      <ul className="h-full w-full">
+        {notifications.length > 0 ? (
+          notifications.data.map((notification: Notification) => (
+            <li key={notification.id}>
+              <p className="text-xl">{notification.title}</p>
+              <p>{notification.message}</p>
+            </li>
+          ))
+        ) : (
+          <div className="text-primary mx-auto flex h-full w-full max-w-sm flex-col items-center justify-center text-center text-xl">
+            No notifications yet, notifications you receive will appear here.
+          </div>
+        )}
       </ul>
     </div>
   );

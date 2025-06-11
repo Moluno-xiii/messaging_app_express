@@ -38,6 +38,11 @@ export type Request = $Result.DefaultSelection<Prisma.$RequestPayload>
  * 
  */
 export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model TemporaryUser
+ * 
+ */
+export type TemporaryUser = $Result.DefaultSelection<Prisma.$TemporaryUserPayload>
 
 /**
  * Enums
@@ -243,6 +248,16 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.temporaryUser`: Exposes CRUD operations for the **TemporaryUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TemporaryUsers
+    * const temporaryUsers = await prisma.temporaryUser.findMany()
+    * ```
+    */
+  get temporaryUser(): Prisma.TemporaryUserDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -687,7 +702,8 @@ export namespace Prisma {
     Message: 'Message',
     Friend: 'Friend',
     Request: 'Request',
-    Notification: 'Notification'
+    Notification: 'Notification',
+    TemporaryUser: 'TemporaryUser'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -706,7 +722,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "message" | "friend" | "request" | "notification"
+      modelProps: "user" | "message" | "friend" | "request" | "notification" | "temporaryUser"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1080,6 +1096,80 @@ export namespace Prisma {
           }
         }
       }
+      TemporaryUser: {
+        payload: Prisma.$TemporaryUserPayload<ExtArgs>
+        fields: Prisma.TemporaryUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TemporaryUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TemporaryUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>
+          }
+          findFirst: {
+            args: Prisma.TemporaryUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TemporaryUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>
+          }
+          findMany: {
+            args: Prisma.TemporaryUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>[]
+          }
+          create: {
+            args: Prisma.TemporaryUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>
+          }
+          createMany: {
+            args: Prisma.TemporaryUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TemporaryUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>[]
+          }
+          delete: {
+            args: Prisma.TemporaryUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>
+          }
+          update: {
+            args: Prisma.TemporaryUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.TemporaryUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TemporaryUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TemporaryUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.TemporaryUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemporaryUserPayload>
+          }
+          aggregate: {
+            args: Prisma.TemporaryUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTemporaryUser>
+          }
+          groupBy: {
+            args: Prisma.TemporaryUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TemporaryUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TemporaryUserCountArgs<ExtArgs>
+            result: $Utils.Optional<TemporaryUserCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1169,6 +1259,7 @@ export namespace Prisma {
     friend?: FriendOmit
     request?: RequestOmit
     notification?: NotificationOmit
+    temporaryUser?: TemporaryUserOmit
   }
 
   /* Types for Logging */
@@ -1359,46 +1450,46 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: string | null
-    date_created: Date | null
+    createdAt: Date | null
     email: string | null
-    hashed_password: string | null
+    hashedPassword: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
-    date_created: Date | null
+    createdAt: Date | null
     email: string | null
-    hashed_password: string | null
+    hashedPassword: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
-    date_created: number
+    createdAt: number
     email: number
-    hashed_password: number
+    hashedPassword: number
     _all: number
   }
 
 
   export type UserMinAggregateInputType = {
     id?: true
-    date_created?: true
+    createdAt?: true
     email?: true
-    hashed_password?: true
+    hashedPassword?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
-    date_created?: true
+    createdAt?: true
     email?: true
-    hashed_password?: true
+    hashedPassword?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
-    date_created?: true
+    createdAt?: true
     email?: true
-    hashed_password?: true
+    hashedPassword?: true
     _all?: true
   }
 
@@ -1476,9 +1567,9 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: string
-    date_created: Date
+    createdAt: Date
     email: string
-    hashed_password: string
+    hashedPassword: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1500,9 +1591,9 @@ export namespace Prisma {
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    date_created?: boolean
+    createdAt?: boolean
     email?: boolean
-    hashed_password?: boolean
+    hashedPassword?: boolean
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     friendsInitiated?: boolean | User$friendsInitiatedArgs<ExtArgs>
@@ -1515,26 +1606,26 @@ export namespace Prisma {
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    date_created?: boolean
+    createdAt?: boolean
     email?: boolean
-    hashed_password?: boolean
+    hashedPassword?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    date_created?: boolean
+    createdAt?: boolean
     email?: boolean
-    hashed_password?: boolean
+    hashedPassword?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
-    date_created?: boolean
+    createdAt?: boolean
     email?: boolean
-    hashed_password?: boolean
+    hashedPassword?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "date_created" | "email" | "hashed_password", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "email" | "hashedPassword", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
@@ -1561,9 +1652,9 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      date_created: Date
+      createdAt: Date
       email: string
-      hashed_password: string
+      hashedPassword: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1995,9 +2086,9 @@ export namespace Prisma {
    */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
-    readonly date_created: FieldRef<"User", 'DateTime'>
+    readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly email: FieldRef<"User", 'String'>
-    readonly hashed_password: FieldRef<"User", 'String'>
+    readonly hashedPassword: FieldRef<"User", 'String'>
   }
     
 
@@ -2584,58 +2675,58 @@ export namespace Prisma {
 
   export type MessageMinAggregateOutputType = {
     id: string | null
-    sender_id: string | null
-    receiver_id: string | null
+    senderId: string | null
+    receiverId: string | null
     date_created: Date | null
     date_updated: Date | null
-    messge: string | null
+    mesasge: string | null
   }
 
   export type MessageMaxAggregateOutputType = {
     id: string | null
-    sender_id: string | null
-    receiver_id: string | null
+    senderId: string | null
+    receiverId: string | null
     date_created: Date | null
     date_updated: Date | null
-    messge: string | null
+    mesasge: string | null
   }
 
   export type MessageCountAggregateOutputType = {
     id: number
-    sender_id: number
-    receiver_id: number
+    senderId: number
+    receiverId: number
     date_created: number
     date_updated: number
-    messge: number
+    mesasge: number
     _all: number
   }
 
 
   export type MessageMinAggregateInputType = {
     id?: true
-    sender_id?: true
-    receiver_id?: true
+    senderId?: true
+    receiverId?: true
     date_created?: true
     date_updated?: true
-    messge?: true
+    mesasge?: true
   }
 
   export type MessageMaxAggregateInputType = {
     id?: true
-    sender_id?: true
-    receiver_id?: true
+    senderId?: true
+    receiverId?: true
     date_created?: true
     date_updated?: true
-    messge?: true
+    mesasge?: true
   }
 
   export type MessageCountAggregateInputType = {
     id?: true
-    sender_id?: true
-    receiver_id?: true
+    senderId?: true
+    receiverId?: true
     date_created?: true
     date_updated?: true
-    messge?: true
+    mesasge?: true
     _all?: true
   }
 
@@ -2713,11 +2804,11 @@ export namespace Prisma {
 
   export type MessageGroupByOutputType = {
     id: string
-    sender_id: string
-    receiver_id: string
+    senderId: string
+    receiverId: string
     date_created: Date
     date_updated: Date
-    messge: string
+    mesasge: string
     _count: MessageCountAggregateOutputType | null
     _min: MessageMinAggregateOutputType | null
     _max: MessageMaxAggregateOutputType | null
@@ -2739,47 +2830,47 @@ export namespace Prisma {
 
   export type MessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sender_id?: boolean
-    receiver_id?: boolean
+    senderId?: boolean
+    receiverId?: boolean
     date_created?: boolean
     date_updated?: boolean
-    messge?: boolean
+    mesasge?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sender_id?: boolean
-    receiver_id?: boolean
+    senderId?: boolean
+    receiverId?: boolean
     date_created?: boolean
     date_updated?: boolean
-    messge?: boolean
+    mesasge?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    sender_id?: boolean
-    receiver_id?: boolean
+    senderId?: boolean
+    receiverId?: boolean
     date_created?: boolean
     date_updated?: boolean
-    messge?: boolean
+    mesasge?: boolean
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["message"]>
 
   export type MessageSelectScalar = {
     id?: boolean
-    sender_id?: boolean
-    receiver_id?: boolean
+    senderId?: boolean
+    receiverId?: boolean
     date_created?: boolean
     date_updated?: boolean
-    messge?: boolean
+    mesasge?: boolean
   }
 
-  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sender_id" | "receiver_id" | "date_created" | "date_updated" | "messge", ExtArgs["result"]["message"]>
+  export type MessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "senderId" | "receiverId" | "date_created" | "date_updated" | "mesasge", ExtArgs["result"]["message"]>
   export type MessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sender?: boolean | UserDefaultArgs<ExtArgs>
     receiver?: boolean | UserDefaultArgs<ExtArgs>
@@ -2801,11 +2892,11 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      sender_id: string
-      receiver_id: string
+      senderId: string
+      receiverId: string
       date_created: Date
       date_updated: Date
-      messge: string
+      mesasge: string
     }, ExtArgs["result"]["message"]>
     composites: {}
   }
@@ -3232,11 +3323,11 @@ export namespace Prisma {
    */
   interface MessageFieldRefs {
     readonly id: FieldRef<"Message", 'String'>
-    readonly sender_id: FieldRef<"Message", 'String'>
-    readonly receiver_id: FieldRef<"Message", 'String'>
+    readonly senderId: FieldRef<"Message", 'String'>
+    readonly receiverId: FieldRef<"Message", 'String'>
     readonly date_created: FieldRef<"Message", 'DateTime'>
     readonly date_updated: FieldRef<"Message", 'DateTime'>
-    readonly messge: FieldRef<"Message", 'String'>
+    readonly mesasge: FieldRef<"Message", 'String'>
   }
     
 
@@ -6842,6 +6933,988 @@ export namespace Prisma {
 
 
   /**
+   * Model TemporaryUser
+   */
+
+  export type AggregateTemporaryUser = {
+    _count: TemporaryUserCountAggregateOutputType | null
+    _min: TemporaryUserMinAggregateOutputType | null
+    _max: TemporaryUserMaxAggregateOutputType | null
+  }
+
+  export type TemporaryUserMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    createdAt: Date | null
+    hashedPassword: string | null
+  }
+
+  export type TemporaryUserMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    createdAt: Date | null
+    hashedPassword: string | null
+  }
+
+  export type TemporaryUserCountAggregateOutputType = {
+    id: number
+    email: number
+    createdAt: number
+    hashedPassword: number
+    _all: number
+  }
+
+
+  export type TemporaryUserMinAggregateInputType = {
+    id?: true
+    email?: true
+    createdAt?: true
+    hashedPassword?: true
+  }
+
+  export type TemporaryUserMaxAggregateInputType = {
+    id?: true
+    email?: true
+    createdAt?: true
+    hashedPassword?: true
+  }
+
+  export type TemporaryUserCountAggregateInputType = {
+    id?: true
+    email?: true
+    createdAt?: true
+    hashedPassword?: true
+    _all?: true
+  }
+
+  export type TemporaryUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TemporaryUser to aggregate.
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemporaryUsers to fetch.
+     */
+    orderBy?: TemporaryUserOrderByWithRelationInput | TemporaryUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TemporaryUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemporaryUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemporaryUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TemporaryUsers
+    **/
+    _count?: true | TemporaryUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TemporaryUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TemporaryUserMaxAggregateInputType
+  }
+
+  export type GetTemporaryUserAggregateType<T extends TemporaryUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateTemporaryUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTemporaryUser[P]>
+      : GetScalarType<T[P], AggregateTemporaryUser[P]>
+  }
+
+
+
+
+  export type TemporaryUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemporaryUserWhereInput
+    orderBy?: TemporaryUserOrderByWithAggregationInput | TemporaryUserOrderByWithAggregationInput[]
+    by: TemporaryUserScalarFieldEnum[] | TemporaryUserScalarFieldEnum
+    having?: TemporaryUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TemporaryUserCountAggregateInputType | true
+    _min?: TemporaryUserMinAggregateInputType
+    _max?: TemporaryUserMaxAggregateInputType
+  }
+
+  export type TemporaryUserGroupByOutputType = {
+    id: string
+    email: string
+    createdAt: Date
+    hashedPassword: string
+    _count: TemporaryUserCountAggregateOutputType | null
+    _min: TemporaryUserMinAggregateOutputType | null
+    _max: TemporaryUserMaxAggregateOutputType | null
+  }
+
+  type GetTemporaryUserGroupByPayload<T extends TemporaryUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TemporaryUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TemporaryUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TemporaryUserGroupByOutputType[P]>
+            : GetScalarType<T[P], TemporaryUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TemporaryUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    createdAt?: boolean
+    hashedPassword?: boolean
+  }, ExtArgs["result"]["temporaryUser"]>
+
+  export type TemporaryUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    createdAt?: boolean
+    hashedPassword?: boolean
+  }, ExtArgs["result"]["temporaryUser"]>
+
+  export type TemporaryUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    createdAt?: boolean
+    hashedPassword?: boolean
+  }, ExtArgs["result"]["temporaryUser"]>
+
+  export type TemporaryUserSelectScalar = {
+    id?: boolean
+    email?: boolean
+    createdAt?: boolean
+    hashedPassword?: boolean
+  }
+
+  export type TemporaryUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "createdAt" | "hashedPassword", ExtArgs["result"]["temporaryUser"]>
+
+  export type $TemporaryUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TemporaryUser"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      createdAt: Date
+      hashedPassword: string
+    }, ExtArgs["result"]["temporaryUser"]>
+    composites: {}
+  }
+
+  type TemporaryUserGetPayload<S extends boolean | null | undefined | TemporaryUserDefaultArgs> = $Result.GetResult<Prisma.$TemporaryUserPayload, S>
+
+  type TemporaryUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TemporaryUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TemporaryUserCountAggregateInputType | true
+    }
+
+  export interface TemporaryUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TemporaryUser'], meta: { name: 'TemporaryUser' } }
+    /**
+     * Find zero or one TemporaryUser that matches the filter.
+     * @param {TemporaryUserFindUniqueArgs} args - Arguments to find a TemporaryUser
+     * @example
+     * // Get one TemporaryUser
+     * const temporaryUser = await prisma.temporaryUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TemporaryUserFindUniqueArgs>(args: SelectSubset<T, TemporaryUserFindUniqueArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TemporaryUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TemporaryUserFindUniqueOrThrowArgs} args - Arguments to find a TemporaryUser
+     * @example
+     * // Get one TemporaryUser
+     * const temporaryUser = await prisma.temporaryUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TemporaryUserFindUniqueOrThrowArgs>(args: SelectSubset<T, TemporaryUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TemporaryUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserFindFirstArgs} args - Arguments to find a TemporaryUser
+     * @example
+     * // Get one TemporaryUser
+     * const temporaryUser = await prisma.temporaryUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TemporaryUserFindFirstArgs>(args?: SelectSubset<T, TemporaryUserFindFirstArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TemporaryUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserFindFirstOrThrowArgs} args - Arguments to find a TemporaryUser
+     * @example
+     * // Get one TemporaryUser
+     * const temporaryUser = await prisma.temporaryUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TemporaryUserFindFirstOrThrowArgs>(args?: SelectSubset<T, TemporaryUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TemporaryUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TemporaryUsers
+     * const temporaryUsers = await prisma.temporaryUser.findMany()
+     * 
+     * // Get first 10 TemporaryUsers
+     * const temporaryUsers = await prisma.temporaryUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const temporaryUserWithIdOnly = await prisma.temporaryUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TemporaryUserFindManyArgs>(args?: SelectSubset<T, TemporaryUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TemporaryUser.
+     * @param {TemporaryUserCreateArgs} args - Arguments to create a TemporaryUser.
+     * @example
+     * // Create one TemporaryUser
+     * const TemporaryUser = await prisma.temporaryUser.create({
+     *   data: {
+     *     // ... data to create a TemporaryUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends TemporaryUserCreateArgs>(args: SelectSubset<T, TemporaryUserCreateArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TemporaryUsers.
+     * @param {TemporaryUserCreateManyArgs} args - Arguments to create many TemporaryUsers.
+     * @example
+     * // Create many TemporaryUsers
+     * const temporaryUser = await prisma.temporaryUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TemporaryUserCreateManyArgs>(args?: SelectSubset<T, TemporaryUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TemporaryUsers and returns the data saved in the database.
+     * @param {TemporaryUserCreateManyAndReturnArgs} args - Arguments to create many TemporaryUsers.
+     * @example
+     * // Create many TemporaryUsers
+     * const temporaryUser = await prisma.temporaryUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TemporaryUsers and only return the `id`
+     * const temporaryUserWithIdOnly = await prisma.temporaryUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TemporaryUserCreateManyAndReturnArgs>(args?: SelectSubset<T, TemporaryUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TemporaryUser.
+     * @param {TemporaryUserDeleteArgs} args - Arguments to delete one TemporaryUser.
+     * @example
+     * // Delete one TemporaryUser
+     * const TemporaryUser = await prisma.temporaryUser.delete({
+     *   where: {
+     *     // ... filter to delete one TemporaryUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TemporaryUserDeleteArgs>(args: SelectSubset<T, TemporaryUserDeleteArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TemporaryUser.
+     * @param {TemporaryUserUpdateArgs} args - Arguments to update one TemporaryUser.
+     * @example
+     * // Update one TemporaryUser
+     * const temporaryUser = await prisma.temporaryUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TemporaryUserUpdateArgs>(args: SelectSubset<T, TemporaryUserUpdateArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TemporaryUsers.
+     * @param {TemporaryUserDeleteManyArgs} args - Arguments to filter TemporaryUsers to delete.
+     * @example
+     * // Delete a few TemporaryUsers
+     * const { count } = await prisma.temporaryUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TemporaryUserDeleteManyArgs>(args?: SelectSubset<T, TemporaryUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TemporaryUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TemporaryUsers
+     * const temporaryUser = await prisma.temporaryUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TemporaryUserUpdateManyArgs>(args: SelectSubset<T, TemporaryUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TemporaryUsers and returns the data updated in the database.
+     * @param {TemporaryUserUpdateManyAndReturnArgs} args - Arguments to update many TemporaryUsers.
+     * @example
+     * // Update many TemporaryUsers
+     * const temporaryUser = await prisma.temporaryUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TemporaryUsers and only return the `id`
+     * const temporaryUserWithIdOnly = await prisma.temporaryUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TemporaryUserUpdateManyAndReturnArgs>(args: SelectSubset<T, TemporaryUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TemporaryUser.
+     * @param {TemporaryUserUpsertArgs} args - Arguments to update or create a TemporaryUser.
+     * @example
+     * // Update or create a TemporaryUser
+     * const temporaryUser = await prisma.temporaryUser.upsert({
+     *   create: {
+     *     // ... data to create a TemporaryUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TemporaryUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TemporaryUserUpsertArgs>(args: SelectSubset<T, TemporaryUserUpsertArgs<ExtArgs>>): Prisma__TemporaryUserClient<$Result.GetResult<Prisma.$TemporaryUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TemporaryUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserCountArgs} args - Arguments to filter TemporaryUsers to count.
+     * @example
+     * // Count the number of TemporaryUsers
+     * const count = await prisma.temporaryUser.count({
+     *   where: {
+     *     // ... the filter for the TemporaryUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends TemporaryUserCountArgs>(
+      args?: Subset<T, TemporaryUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TemporaryUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TemporaryUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TemporaryUserAggregateArgs>(args: Subset<T, TemporaryUserAggregateArgs>): Prisma.PrismaPromise<GetTemporaryUserAggregateType<T>>
+
+    /**
+     * Group by TemporaryUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemporaryUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TemporaryUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TemporaryUserGroupByArgs['orderBy'] }
+        : { orderBy?: TemporaryUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TemporaryUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTemporaryUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TemporaryUser model
+   */
+  readonly fields: TemporaryUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TemporaryUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TemporaryUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TemporaryUser model
+   */
+  interface TemporaryUserFieldRefs {
+    readonly id: FieldRef<"TemporaryUser", 'String'>
+    readonly email: FieldRef<"TemporaryUser", 'String'>
+    readonly createdAt: FieldRef<"TemporaryUser", 'DateTime'>
+    readonly hashedPassword: FieldRef<"TemporaryUser", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TemporaryUser findUnique
+   */
+  export type TemporaryUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * Filter, which TemporaryUser to fetch.
+     */
+    where: TemporaryUserWhereUniqueInput
+  }
+
+  /**
+   * TemporaryUser findUniqueOrThrow
+   */
+  export type TemporaryUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * Filter, which TemporaryUser to fetch.
+     */
+    where: TemporaryUserWhereUniqueInput
+  }
+
+  /**
+   * TemporaryUser findFirst
+   */
+  export type TemporaryUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * Filter, which TemporaryUser to fetch.
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemporaryUsers to fetch.
+     */
+    orderBy?: TemporaryUserOrderByWithRelationInput | TemporaryUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TemporaryUsers.
+     */
+    cursor?: TemporaryUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemporaryUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemporaryUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TemporaryUsers.
+     */
+    distinct?: TemporaryUserScalarFieldEnum | TemporaryUserScalarFieldEnum[]
+  }
+
+  /**
+   * TemporaryUser findFirstOrThrow
+   */
+  export type TemporaryUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * Filter, which TemporaryUser to fetch.
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemporaryUsers to fetch.
+     */
+    orderBy?: TemporaryUserOrderByWithRelationInput | TemporaryUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TemporaryUsers.
+     */
+    cursor?: TemporaryUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemporaryUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemporaryUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TemporaryUsers.
+     */
+    distinct?: TemporaryUserScalarFieldEnum | TemporaryUserScalarFieldEnum[]
+  }
+
+  /**
+   * TemporaryUser findMany
+   */
+  export type TemporaryUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * Filter, which TemporaryUsers to fetch.
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemporaryUsers to fetch.
+     */
+    orderBy?: TemporaryUserOrderByWithRelationInput | TemporaryUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TemporaryUsers.
+     */
+    cursor?: TemporaryUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemporaryUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemporaryUsers.
+     */
+    skip?: number
+    distinct?: TemporaryUserScalarFieldEnum | TemporaryUserScalarFieldEnum[]
+  }
+
+  /**
+   * TemporaryUser create
+   */
+  export type TemporaryUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * The data needed to create a TemporaryUser.
+     */
+    data: XOR<TemporaryUserCreateInput, TemporaryUserUncheckedCreateInput>
+  }
+
+  /**
+   * TemporaryUser createMany
+   */
+  export type TemporaryUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TemporaryUsers.
+     */
+    data: TemporaryUserCreateManyInput | TemporaryUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TemporaryUser createManyAndReturn
+   */
+  export type TemporaryUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many TemporaryUsers.
+     */
+    data: TemporaryUserCreateManyInput | TemporaryUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TemporaryUser update
+   */
+  export type TemporaryUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * The data needed to update a TemporaryUser.
+     */
+    data: XOR<TemporaryUserUpdateInput, TemporaryUserUncheckedUpdateInput>
+    /**
+     * Choose, which TemporaryUser to update.
+     */
+    where: TemporaryUserWhereUniqueInput
+  }
+
+  /**
+   * TemporaryUser updateMany
+   */
+  export type TemporaryUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TemporaryUsers.
+     */
+    data: XOR<TemporaryUserUpdateManyMutationInput, TemporaryUserUncheckedUpdateManyInput>
+    /**
+     * Filter which TemporaryUsers to update
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * Limit how many TemporaryUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemporaryUser updateManyAndReturn
+   */
+  export type TemporaryUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * The data used to update TemporaryUsers.
+     */
+    data: XOR<TemporaryUserUpdateManyMutationInput, TemporaryUserUncheckedUpdateManyInput>
+    /**
+     * Filter which TemporaryUsers to update
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * Limit how many TemporaryUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemporaryUser upsert
+   */
+  export type TemporaryUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * The filter to search for the TemporaryUser to update in case it exists.
+     */
+    where: TemporaryUserWhereUniqueInput
+    /**
+     * In case the TemporaryUser found by the `where` argument doesn't exist, create a new TemporaryUser with this data.
+     */
+    create: XOR<TemporaryUserCreateInput, TemporaryUserUncheckedCreateInput>
+    /**
+     * In case the TemporaryUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TemporaryUserUpdateInput, TemporaryUserUncheckedUpdateInput>
+  }
+
+  /**
+   * TemporaryUser delete
+   */
+  export type TemporaryUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+    /**
+     * Filter which TemporaryUser to delete.
+     */
+    where: TemporaryUserWhereUniqueInput
+  }
+
+  /**
+   * TemporaryUser deleteMany
+   */
+  export type TemporaryUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TemporaryUsers to delete
+     */
+    where?: TemporaryUserWhereInput
+    /**
+     * Limit how many TemporaryUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemporaryUser without action
+   */
+  export type TemporaryUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemporaryUser
+     */
+    select?: TemporaryUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemporaryUser
+     */
+    omit?: TemporaryUserOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6857,9 +7930,9 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
-    date_created: 'date_created',
+    createdAt: 'createdAt',
     email: 'email',
-    hashed_password: 'hashed_password'
+    hashedPassword: 'hashedPassword'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6867,11 +7940,11 @@ export namespace Prisma {
 
   export const MessageScalarFieldEnum: {
     id: 'id',
-    sender_id: 'sender_id',
-    receiver_id: 'receiver_id',
+    senderId: 'senderId',
+    receiverId: 'receiverId',
     date_created: 'date_created',
     date_updated: 'date_updated',
-    messge: 'messge'
+    mesasge: 'mesasge'
   };
 
   export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
@@ -6908,6 +7981,16 @@ export namespace Prisma {
   };
 
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const TemporaryUserScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    createdAt: 'createdAt',
+    hashedPassword: 'hashedPassword'
+  };
+
+  export type TemporaryUserScalarFieldEnum = (typeof TemporaryUserScalarFieldEnum)[keyof typeof TemporaryUserScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7009,9 +8092,9 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
-    date_created?: DateTimeFilter<"User"> | Date | string
+    createdAt?: DateTimeFilter<"User"> | Date | string
     email?: StringFilter<"User"> | string
-    hashed_password?: StringFilter<"User"> | string
+    hashedPassword?: StringFilter<"User"> | string
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
     friendsInitiated?: FriendListRelationFilter
@@ -7023,9 +8106,9 @@ export namespace Prisma {
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    date_created?: SortOrder
+    createdAt?: SortOrder
     email?: SortOrder
-    hashed_password?: SortOrder
+    hashedPassword?: SortOrder
     sentMessages?: MessageOrderByRelationAggregateInput
     receivedMessages?: MessageOrderByRelationAggregateInput
     friendsInitiated?: FriendOrderByRelationAggregateInput
@@ -7041,8 +8124,8 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    date_created?: DateTimeFilter<"User"> | Date | string
-    hashed_password?: StringFilter<"User"> | string
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    hashedPassword?: StringFilter<"User"> | string
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
     friendsInitiated?: FriendListRelationFilter
@@ -7054,9 +8137,9 @@ export namespace Prisma {
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    date_created?: SortOrder
+    createdAt?: SortOrder
     email?: SortOrder
-    hashed_password?: SortOrder
+    hashedPassword?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -7067,9 +8150,9 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
-    date_created?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     email?: StringWithAggregatesFilter<"User"> | string
-    hashed_password?: StringWithAggregatesFilter<"User"> | string
+    hashedPassword?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type MessageWhereInput = {
@@ -7077,22 +8160,22 @@ export namespace Prisma {
     OR?: MessageWhereInput[]
     NOT?: MessageWhereInput | MessageWhereInput[]
     id?: StringFilter<"Message"> | string
-    sender_id?: StringFilter<"Message"> | string
-    receiver_id?: StringFilter<"Message"> | string
+    senderId?: StringFilter<"Message"> | string
+    receiverId?: StringFilter<"Message"> | string
     date_created?: DateTimeFilter<"Message"> | Date | string
     date_updated?: DateTimeFilter<"Message"> | Date | string
-    messge?: StringFilter<"Message"> | string
+    mesasge?: StringFilter<"Message"> | string
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type MessageOrderByWithRelationInput = {
     id?: SortOrder
-    sender_id?: SortOrder
-    receiver_id?: SortOrder
+    senderId?: SortOrder
+    receiverId?: SortOrder
     date_created?: SortOrder
     date_updated?: SortOrder
-    messge?: SortOrder
+    mesasge?: SortOrder
     sender?: UserOrderByWithRelationInput
     receiver?: UserOrderByWithRelationInput
   }
@@ -7102,22 +8185,22 @@ export namespace Prisma {
     AND?: MessageWhereInput | MessageWhereInput[]
     OR?: MessageWhereInput[]
     NOT?: MessageWhereInput | MessageWhereInput[]
-    sender_id?: StringFilter<"Message"> | string
-    receiver_id?: StringFilter<"Message"> | string
+    senderId?: StringFilter<"Message"> | string
+    receiverId?: StringFilter<"Message"> | string
     date_created?: DateTimeFilter<"Message"> | Date | string
     date_updated?: DateTimeFilter<"Message"> | Date | string
-    messge?: StringFilter<"Message"> | string
+    mesasge?: StringFilter<"Message"> | string
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
     receiver?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type MessageOrderByWithAggregationInput = {
     id?: SortOrder
-    sender_id?: SortOrder
-    receiver_id?: SortOrder
+    senderId?: SortOrder
+    receiverId?: SortOrder
     date_created?: SortOrder
     date_updated?: SortOrder
-    messge?: SortOrder
+    mesasge?: SortOrder
     _count?: MessageCountOrderByAggregateInput
     _max?: MessageMaxOrderByAggregateInput
     _min?: MessageMinOrderByAggregateInput
@@ -7128,11 +8211,11 @@ export namespace Prisma {
     OR?: MessageScalarWhereWithAggregatesInput[]
     NOT?: MessageScalarWhereWithAggregatesInput | MessageScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Message"> | string
-    sender_id?: StringWithAggregatesFilter<"Message"> | string
-    receiver_id?: StringWithAggregatesFilter<"Message"> | string
+    senderId?: StringWithAggregatesFilter<"Message"> | string
+    receiverId?: StringWithAggregatesFilter<"Message"> | string
     date_created?: DateTimeWithAggregatesFilter<"Message"> | Date | string
     date_updated?: DateTimeWithAggregatesFilter<"Message"> | Date | string
-    messge?: StringWithAggregatesFilter<"Message"> | string
+    mesasge?: StringWithAggregatesFilter<"Message"> | string
   }
 
   export type FriendWhereInput = {
@@ -7308,11 +8391,58 @@ export namespace Prisma {
     receivedAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
+  export type TemporaryUserWhereInput = {
+    AND?: TemporaryUserWhereInput | TemporaryUserWhereInput[]
+    OR?: TemporaryUserWhereInput[]
+    NOT?: TemporaryUserWhereInput | TemporaryUserWhereInput[]
+    id?: StringFilter<"TemporaryUser"> | string
+    email?: StringFilter<"TemporaryUser"> | string
+    createdAt?: DateTimeFilter<"TemporaryUser"> | Date | string
+    hashedPassword?: StringFilter<"TemporaryUser"> | string
+  }
+
+  export type TemporaryUserOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    hashedPassword?: SortOrder
+  }
+
+  export type TemporaryUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: TemporaryUserWhereInput | TemporaryUserWhereInput[]
+    OR?: TemporaryUserWhereInput[]
+    NOT?: TemporaryUserWhereInput | TemporaryUserWhereInput[]
+    createdAt?: DateTimeFilter<"TemporaryUser"> | Date | string
+    hashedPassword?: StringFilter<"TemporaryUser"> | string
+  }, "id" | "email">
+
+  export type TemporaryUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    hashedPassword?: SortOrder
+    _count?: TemporaryUserCountOrderByAggregateInput
+    _max?: TemporaryUserMaxOrderByAggregateInput
+    _min?: TemporaryUserMinOrderByAggregateInput
+  }
+
+  export type TemporaryUserScalarWhereWithAggregatesInput = {
+    AND?: TemporaryUserScalarWhereWithAggregatesInput | TemporaryUserScalarWhereWithAggregatesInput[]
+    OR?: TemporaryUserScalarWhereWithAggregatesInput[]
+    NOT?: TemporaryUserScalarWhereWithAggregatesInput | TemporaryUserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TemporaryUser"> | string
+    email?: StringWithAggregatesFilter<"TemporaryUser"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"TemporaryUser"> | Date | string
+    hashedPassword?: StringWithAggregatesFilter<"TemporaryUser"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
@@ -7324,9 +8454,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
@@ -7338,9 +8468,9 @@ export namespace Prisma {
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
@@ -7352,9 +8482,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
@@ -7366,84 +8496,84 @@ export namespace Prisma {
 
   export type UserCreateManyInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageCreateInput = {
     id?: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
     sender: UserCreateNestedOneWithoutSentMessagesInput
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
   }
 
   export type MessageUncheckedCreateInput = {
     id?: string
-    sender_id: string
-    receiver_id: string
+    senderId: string
+    receiverId: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
   }
 
   export type MessageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
   }
 
   export type MessageUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sender_id?: StringFieldUpdateOperationsInput | string
-    receiver_id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    receiverId?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageCreateManyInput = {
     id?: string
-    sender_id: string
-    receiver_id: string
+    senderId: string
+    receiverId: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
   }
 
   export type MessageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sender_id?: StringFieldUpdateOperationsInput | string
-    receiver_id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
+    receiverId?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type FriendCreateInput = {
@@ -7609,6 +8739,55 @@ export namespace Prisma {
     receivedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TemporaryUserCreateInput = {
+    id?: string
+    email: string
+    createdAt?: Date | string
+    hashedPassword: string
+  }
+
+  export type TemporaryUserUncheckedCreateInput = {
+    id?: string
+    email: string
+    createdAt?: Date | string
+    hashedPassword: string
+  }
+
+  export type TemporaryUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TemporaryUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TemporaryUserCreateManyInput = {
+    id?: string
+    email: string
+    createdAt?: Date | string
+    hashedPassword: string
+  }
+
+  export type TemporaryUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TemporaryUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7677,23 +8856,23 @@ export namespace Prisma {
 
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
-    date_created?: SortOrder
+    createdAt?: SortOrder
     email?: SortOrder
-    hashed_password?: SortOrder
+    hashedPassword?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
-    date_created?: SortOrder
+    createdAt?: SortOrder
     email?: SortOrder
-    hashed_password?: SortOrder
+    hashedPassword?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
-    date_created?: SortOrder
+    createdAt?: SortOrder
     email?: SortOrder
-    hashed_password?: SortOrder
+    hashedPassword?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -7735,29 +8914,29 @@ export namespace Prisma {
 
   export type MessageCountOrderByAggregateInput = {
     id?: SortOrder
-    sender_id?: SortOrder
-    receiver_id?: SortOrder
+    senderId?: SortOrder
+    receiverId?: SortOrder
     date_created?: SortOrder
     date_updated?: SortOrder
-    messge?: SortOrder
+    mesasge?: SortOrder
   }
 
   export type MessageMaxOrderByAggregateInput = {
     id?: SortOrder
-    sender_id?: SortOrder
-    receiver_id?: SortOrder
+    senderId?: SortOrder
+    receiverId?: SortOrder
     date_created?: SortOrder
     date_updated?: SortOrder
-    messge?: SortOrder
+    mesasge?: SortOrder
   }
 
   export type MessageMinOrderByAggregateInput = {
     id?: SortOrder
-    sender_id?: SortOrder
-    receiver_id?: SortOrder
+    senderId?: SortOrder
+    receiverId?: SortOrder
     date_created?: SortOrder
     date_updated?: SortOrder
-    messge?: SortOrder
+    mesasge?: SortOrder
   }
 
   export type EnumStatusFilter<$PrismaModel = never> = {
@@ -7874,6 +9053,27 @@ export namespace Prisma {
     message?: SortOrder
     email?: SortOrder
     receivedAt?: SortOrder
+  }
+
+  export type TemporaryUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    hashedPassword?: SortOrder
+  }
+
+  export type TemporaryUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    hashedPassword?: SortOrder
+  }
+
+  export type TemporaryUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    createdAt?: SortOrder
+    hashedPassword?: SortOrder
   }
 
   export type MessageCreateNestedManyWithoutSenderInput = {
@@ -8389,16 +9589,16 @@ export namespace Prisma {
     id?: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
     receiver: UserCreateNestedOneWithoutReceivedMessagesInput
   }
 
   export type MessageUncheckedCreateWithoutSenderInput = {
     id?: string
-    receiver_id: string
+    receiverId: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
   }
 
   export type MessageCreateOrConnectWithoutSenderInput = {
@@ -8415,16 +9615,16 @@ export namespace Prisma {
     id?: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
     sender: UserCreateNestedOneWithoutSentMessagesInput
   }
 
   export type MessageUncheckedCreateWithoutReceiverInput = {
     id?: string
-    sender_id: string
+    senderId: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
   }
 
   export type MessageCreateOrConnectWithoutReceiverInput = {
@@ -8578,11 +9778,11 @@ export namespace Prisma {
     OR?: MessageScalarWhereInput[]
     NOT?: MessageScalarWhereInput | MessageScalarWhereInput[]
     id?: StringFilter<"Message"> | string
-    sender_id?: StringFilter<"Message"> | string
-    receiver_id?: StringFilter<"Message"> | string
+    senderId?: StringFilter<"Message"> | string
+    receiverId?: StringFilter<"Message"> | string
     date_created?: DateTimeFilter<"Message"> | Date | string
     date_updated?: DateTimeFilter<"Message"> | Date | string
-    messge?: StringFilter<"Message"> | string
+    mesasge?: StringFilter<"Message"> | string
   }
 
   export type MessageUpsertWithWhereUniqueWithoutReceiverInput = {
@@ -8716,9 +9916,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutSentMessagesInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
     friendsReceived?: FriendCreateNestedManyWithoutFriendInput
@@ -8729,9 +9929,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
     friendsReceived?: FriendUncheckedCreateNestedManyWithoutFriendInput
@@ -8747,9 +9947,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutReceivedMessagesInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
     friendsReceived?: FriendCreateNestedManyWithoutFriendInput
@@ -8760,9 +9960,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
     friendsReceived?: FriendUncheckedCreateNestedManyWithoutFriendInput
@@ -8789,9 +9989,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutSentMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
     friendsReceived?: FriendUpdateManyWithoutFriendNestedInput
@@ -8802,9 +10002,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
     friendsReceived?: FriendUncheckedUpdateManyWithoutFriendNestedInput
@@ -8826,9 +10026,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutReceivedMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
     friendsReceived?: FriendUpdateManyWithoutFriendNestedInput
@@ -8839,9 +10039,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
     friendsReceived?: FriendUncheckedUpdateManyWithoutFriendNestedInput
@@ -8852,9 +10052,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutFriendsInitiatedInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsReceived?: FriendCreateNestedManyWithoutFriendInput
@@ -8865,9 +10065,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutFriendsInitiatedInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsReceived?: FriendUncheckedCreateNestedManyWithoutFriendInput
@@ -8883,9 +10083,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutFriendsReceivedInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
@@ -8896,9 +10096,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutFriendsReceivedInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
@@ -8925,9 +10125,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutFriendsInitiatedInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsReceived?: FriendUpdateManyWithoutFriendNestedInput
@@ -8938,9 +10138,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutFriendsInitiatedInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsReceived?: FriendUncheckedUpdateManyWithoutFriendNestedInput
@@ -8962,9 +10162,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutFriendsReceivedInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
@@ -8975,9 +10175,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutFriendsReceivedInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
@@ -8988,9 +10188,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutRequestSentInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
@@ -9001,9 +10201,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutRequestSentInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
@@ -9019,9 +10219,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutRequestReceivedInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
@@ -9032,9 +10232,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutRequestReceivedInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
@@ -9061,9 +10261,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutRequestSentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
@@ -9074,9 +10274,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutRequestSentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
@@ -9098,9 +10298,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutRequestReceivedInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
@@ -9111,9 +10311,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutRequestReceivedInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
@@ -9124,9 +10324,9 @@ export namespace Prisma {
 
   export type UserCreateWithoutNotificationInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendCreateNestedManyWithoutUserInput
@@ -9137,9 +10337,9 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutNotificationInput = {
     id?: string
-    date_created?: Date | string
+    createdAt?: Date | string
     email: string
-    hashed_password: string
+    hashedPassword: string
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     friendsInitiated?: FriendUncheckedCreateNestedManyWithoutUserInput
@@ -9166,9 +10366,9 @@ export namespace Prisma {
 
   export type UserUpdateWithoutNotificationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUpdateManyWithoutUserNestedInput
@@ -9179,9 +10379,9 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutNotificationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    date_created?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
-    hashed_password?: StringFieldUpdateOperationsInput | string
+    hashedPassword?: StringFieldUpdateOperationsInput | string
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     friendsInitiated?: FriendUncheckedUpdateManyWithoutUserNestedInput
@@ -9192,18 +10392,18 @@ export namespace Prisma {
 
   export type MessageCreateManySenderInput = {
     id?: string
-    receiver_id: string
+    receiverId: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
   }
 
   export type MessageCreateManyReceiverInput = {
     id?: string
-    sender_id: string
+    senderId: string
     date_created?: Date | string
     date_updated?: Date | string
-    messge: string
+    mesasge: string
   }
 
   export type FriendCreateManyUserInput = {
@@ -9245,48 +10445,48 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
     receiver?: UserUpdateOneRequiredWithoutReceivedMessagesNestedInput
   }
 
   export type MessageUncheckedUpdateWithoutSenderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    receiver_id?: StringFieldUpdateOperationsInput | string
+    receiverId?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyWithoutSenderInput = {
     id?: StringFieldUpdateOperationsInput | string
-    receiver_id?: StringFieldUpdateOperationsInput | string
+    receiverId?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUpdateWithoutReceiverInput = {
     id?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
     sender?: UserUpdateOneRequiredWithoutSentMessagesNestedInput
   }
 
   export type MessageUncheckedUpdateWithoutReceiverInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sender_id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type MessageUncheckedUpdateManyWithoutReceiverInput = {
     id?: StringFieldUpdateOperationsInput | string
-    sender_id?: StringFieldUpdateOperationsInput | string
+    senderId?: StringFieldUpdateOperationsInput | string
     date_created?: DateTimeFieldUpdateOperationsInput | Date | string
     date_updated?: DateTimeFieldUpdateOperationsInput | Date | string
-    messge?: StringFieldUpdateOperationsInput | string
+    mesasge?: StringFieldUpdateOperationsInput | string
   }
 
   export type FriendUpdateWithoutUserInput = {

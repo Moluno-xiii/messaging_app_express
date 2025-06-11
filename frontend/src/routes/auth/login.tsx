@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import useAuth from "../../hooks/useAuth";
 import { login } from "../../utils/auth";
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth/login")({
   component: RouteComponent,
@@ -11,10 +12,12 @@ export const Route = createFileRoute("/auth/login")({
 
 function RouteComponent() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { setUser } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formBody = Object.fromEntries(formData) as {
@@ -23,12 +26,14 @@ function RouteComponent() {
     };
     const { user, error, message } = await login(formBody);
     if (error) {
+      setIsLoading(false);
       toast.error(error);
       throw new Error(error);
     } else {
       setUser(user);
       toast.success(message ?? "Login successful");
       router.navigate({ to: "/chat", replace: true });
+      setIsLoading(false);
     }
   };
 
@@ -72,9 +77,15 @@ function RouteComponent() {
           />
         )}
       </div>
-      <button type="submit" className="btn-fill">
-        Login
+      <button type="submit" className="btn-fill disabled:cursor-not-allowed">
+        {isLoading ? "Logging in..." : "       Login"}
       </button>
+      <Link
+        className="text-primary hover:text-primary/70 transition-all duration-200 hover:underline"
+        to={"/auth/forgot-password"}
+      >
+        Forgot password?
+      </Link>
     </form>
   );
 }

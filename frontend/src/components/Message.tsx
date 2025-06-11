@@ -12,7 +12,7 @@ const Message = ({ message }: { message: MessageTypes }) => {
             {message.messge}
           </span>
           <span className="self-end text-sm">
-            {ISOToString(message.date_created).split(",")[1]}
+            {ISOToString(message.date_created).split(",")}
           </span>
         </div>
       ) : (
@@ -21,7 +21,7 @@ const Message = ({ message }: { message: MessageTypes }) => {
             {message.messge}
           </span>
           <span className="text-sm">
-            {ISOToString(message.date_created).split(",")[1]}
+            {ISOToString(message.date_created).split(",")}
           </span>
         </div>
       )}

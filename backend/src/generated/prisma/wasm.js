@@ -122,18 +122,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  date_created: 'date_created',
+  createdAt: 'createdAt',
   email: 'email',
-  hashed_password: 'hashed_password'
+  hashedPassword: 'hashedPassword'
 };
 
 exports.Prisma.MessageScalarFieldEnum = {
   id: 'id',
-  sender_id: 'sender_id',
-  receiver_id: 'receiver_id',
+  senderId: 'senderId',
+  receiverId: 'receiverId',
   date_created: 'date_created',
   date_updated: 'date_updated',
-  messge: 'messge'
+  mesasge: 'mesasge'
 };
 
 exports.Prisma.FriendScalarFieldEnum = {
@@ -158,6 +158,13 @@ exports.Prisma.NotificationScalarFieldEnum = {
   message: 'message',
   email: 'email',
   receivedAt: 'receivedAt'
+};
+
+exports.Prisma.TemporaryUserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  createdAt: 'createdAt',
+  hashedPassword: 'hashedPassword'
 };
 
 exports.Prisma.SortOrder = {
@@ -185,7 +192,8 @@ exports.Prisma.ModelName = {
   Message: 'Message',
   Friend: 'Friend',
   Request: 'Request',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  TemporaryUser: 'TemporaryUser'
 };
 
 /**
