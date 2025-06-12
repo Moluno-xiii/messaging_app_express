@@ -160,6 +160,13 @@ exports.Prisma.NotificationScalarFieldEnum = {
   receivedAt: 'receivedAt'
 };
 
+exports.Prisma.ProfileScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  displayName: 'displayName',
+  profilePic: 'profilePic'
+};
+
 exports.Prisma.TemporaryUserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -175,6 +182,11 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 exports.Status = exports.$Enums.Status = {
   ONLINE: 'ONLINE',
@@ -193,6 +205,7 @@ exports.Prisma.ModelName = {
   Friend: 'Friend',
   Request: 'Request',
   Notification: 'Notification',
+  Profile: 'Profile',
   TemporaryUser: 'TemporaryUser'
 };
 

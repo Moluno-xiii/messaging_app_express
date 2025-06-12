@@ -47,6 +47,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
+    const userProfile = await prisma.profile.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
     const sessionId = crypto.randomUUID();
     const { accessToken, refreshToken } = generateTokens(
       email,
@@ -61,71 +67,10 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     );
 
     setCookies(res, accessToken, refreshToken);
-    res.status(200).json({ message: "Login successful!", user });
+    res.status(200).json({ message: "Login successful!", user: userProfile });
   } catch (err) {
     const error = err instanceof Error ? err.message : "Unexpected error";
     res.status(500).json({ error });
-  }
-};
-
-const refresh = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { refreshToken } = req.cookies;
-
-    if (!refreshToken) {
-      res
-        .status(401)
-        .json({ error: "No refresh token, refresh token required." });
-      return;
-    }
-
-    const decoded = verifySessionToken(refreshToken, res);
-    if (!decoded) {
-      res.status(401).json("Invalid refresh token");
-      return;
-    }
-    const { sessionId, email, id } = decoded;
-    const storedToken = await redisClient.get(`session:${sessionId}`);
-
-    if (refreshToken !== storedToken) {
-      res.status(401).json({ error: "Invalid refresh token, log user out" });
-      return;
-    }
-
-    if (!storedToken) {
-      res.status(401).json({ error: "Invalid token" });
-      return;
-    }
-
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
-      email,
-      id,
-      sessionId
-    );
-
-    await redisClient.del(`session:${sessionId}`);
-    await redisClient.setEx(
-      `session:${sessionId}`,
-      15 * 24 * 60 * 60,
-      newRefreshToken
-    );
-
-    setCookies(res, accessToken, newRefreshToken);
-    res.json({ message: "Cookies refreshed successfully!" });
-    return;
-  } catch (err) {
-    res.status(500).json({ error: "An unexpected error occured" });
-  }
-};
-
-const logout = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    await redisClient.del(`session:${req.body.sessionId}`);
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
-    res.status(200).json({ message: "Logout successful!" });
-  } catch (err: unknown) {
-    res.status(500).json({ error: "An unexpected error occured, try again." });
   }
 };
 
@@ -144,6 +89,7 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
       data: {
         email: decryptedData.email,
         hashedPassword: decryptedData.hashedPassword,
+        // profilePic: process.env.DEFAULT_PROFILE_PIC,
       },
     });
     await prisma.temporaryUser.delete({
@@ -151,12 +97,17 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
         email: decryptedData.email,
       },
     });
+    await prisma.profile.create({
+      data: {
+        id: newUser.id,
+        email: newUser.email,
+        displayName: newUser.email,
+      },
+    });
+
     res.status(200).json({
       message: "Email verified successfully.",
       success: true,
-      data: req.body,
-      decodedData: decryptedData,
-      newUser,
     });
     return;
   } catch (err: unknown) {
@@ -172,6 +123,29 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
     res
       .status(500)
       .json({ success: false, message: "Unexpected error, try again." });
+  }
+};
+
+const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { accessToken } = req.cookies;
+    console.log("accessToken", accessToken);
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    const tokenData = verifySessionToken(accessToken, res);
+
+    if (!tokenData) {
+      res.status(400).json({ message: "Invalid token", success: false });
+      return;
+    }
+    console.log("Is token valid", tokenData);
+    await redisClient.del(`session:${tokenData?.sessionId}`);
+    res.status(200).json({ message: "Logout successful!", success: true });
+  } catch (err: unknown) {
+    res.status(500).json({
+      message: "An unexpected error occured, try again.",
+      success: false,
+    });
   }
 };
 
@@ -244,6 +218,56 @@ const resetPassword = async (
     res
       .status(500)
       .json({ message: "Unknown error on reset password", success: false });
+  }
+};
+
+const refresh = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+      res
+        .status(401)
+        .json({ error: "No refresh token, refresh token required." });
+      return;
+    }
+
+    const decoded = verifySessionToken(refreshToken, res);
+    if (!decoded) {
+      res.status(401).json("Invalid refresh token");
+      return;
+    }
+    const { sessionId, email, id } = decoded;
+    const storedToken = await redisClient.get(`session:${sessionId}`);
+
+    if (refreshToken !== storedToken) {
+      res.status(401).json({ error: "Invalid refresh token, log user out" });
+      return;
+    }
+
+    if (!storedToken) {
+      res.status(401).json({ error: "Invalid token" });
+      return;
+    }
+
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+      email,
+      id,
+      sessionId
+    );
+
+    await redisClient.del(`session:${sessionId}`);
+    await redisClient.setEx(
+      `session:${sessionId}`,
+      15 * 24 * 60 * 60,
+      newRefreshToken
+    );
+
+    setCookies(res, accessToken, newRefreshToken);
+    res.json({ message: "Cookies refreshed successfully!" });
+    return;
+  } catch (err) {
+    res.status(500).json({ error: "An unexpected error occured" });
   }
 };
 

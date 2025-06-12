@@ -7,14 +7,13 @@ import React, {
   type SetStateAction,
 } from "react";
 import toast from "react-hot-toast";
-import authenticatedFetch from "../utils/authenticatedFetch";
+import useGetUserProfile from "../hooks/queryHooks/useGetUserProfile";
 
-interface User {
+export interface User {
   id: string;
-  iat: number;
-  exp: number;
-  sessionId: string;
   email: string;
+  displayName: string;
+  profilePic: string | null;
 }
 
 interface ContextTypes {
@@ -33,44 +32,53 @@ const AuthContext = createContext<ContextTypes>({
 
 const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isPending, data } = useGetUserProfile();
+  const [isLoading, setIsLoading] = useState(isPending);
 
   useEffect(() => {
     async function fetchUserData() {
-      try {
-        const query = await authenticatedFetch("http://localhost:7002/me");
+      // console.log("dat from query hook", data);
+      setUser(data);
+      // try {
+      //   const query = await authenticatedFetch("http://localhost:7002/profile");
 
-        const response = await query.json();
-        toast.success("Authentication succesful");
-        setUser(response.user);
-      } catch {
-        toast.error("No active session");
-        setUser(null);
-      }
+      //   const response = await query.json();
+
+      //   if (response.success) {
+      //     toast.success("Authentication succesful");
+      //     setUser(response.user);
+      //   } else {
+      //     toast.error(response.message);
+      //     setUser(null);
+      //   }
+      //   return;
+      // } catch {
+      //   toast.error("No active session");
+      //   setUser(null);
+      // }
     }
 
     fetchUserData();
-  }, []);
+  }, [data]);
 
   const logout = async (successCb: () => void) => {
     try {
       setIsLoading(true);
       const req = await fetch("http://localhost:7002/auth/logout", {
         method: "POST",
-        body: JSON.stringify({ sessionId: user?.sessionId }),
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         mode: "cors",
       });
-      const { error, message } = await req.json();
+      const { success, message } = await req.json();
 
-      if (error) {
-        throw new Error(error);
-      }
-      successCb();
       setUser(null);
+      successCb();
+      if (!success) {
+        throw new Error(message);
+      }
       toast.success(message);
     } catch {
       toast.error("Logout failed");

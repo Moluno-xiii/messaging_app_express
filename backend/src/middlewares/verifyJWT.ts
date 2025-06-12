@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { verifySessionToken } from "../utils/auth";
+import {
+  checkIfUserExists,
+  findUserData,
+  verifySessionToken,
+} from "../utils/auth";
 
 async function verifyJwt(req: Request, res: Response, next: NextFunction) {
   const { accessToken, refreshToken } = req.cookies;
@@ -27,10 +31,12 @@ async function verifyJwt(req: Request, res: Response, next: NextFunction) {
         .json({ error: "Invalid access token", status: "INVALID_TOKEN" });
       return;
     }
+
     req.user = decoded;
     next();
   } catch (err) {
     res.status(500).json({ error: "unexpected error" });
+    return;
   }
 }
 

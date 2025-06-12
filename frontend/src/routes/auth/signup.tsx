@@ -34,7 +34,7 @@ function RouteComponent() {
       toast.error(message);
       setIsLoading(false);
     } else {
-      event.currentTarget.reset();
+      // event.currentTarget.reset();
       toast.success(message);
       setIsLoading(false);
     }

@@ -21,6 +21,7 @@ const PasswordInput: React.FC<Props> = ({
         name={name}
         minLength={minLength}
         disabled={isDisabled}
+        required
       />
       {showPassword ? (
         <IoEyeOffOutline

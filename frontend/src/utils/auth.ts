@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import type { User } from "../contexts/AuthContext";
 
 const login = async (formData: {
   email: string;
@@ -6,13 +7,7 @@ const login = async (formData: {
 }): Promise<{
   error?: string;
   message?: string;
-  user: {
-    iat: number;
-    exp: number;
-    sessionId: string;
-    email: string;
-    id: string;
-  };
+  user: User;
 }> => {
   try {
     const request = await fetch("http://localhost:7002/auth/login", {

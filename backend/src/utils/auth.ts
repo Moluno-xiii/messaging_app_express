@@ -104,9 +104,17 @@ const createTemporaryUser = async (
   next: NextFunction
 ) => {
   try {
-    await checkIfUserExists(res, req);
-
     const { email, password } = req.body;
+    const doesUserEmailExist = await checkIfUserExists(email);
+
+    if (doesUserEmailExist > 0) {
+      res.status(409).json({
+        message: "Email already exists!",
+        success: false,
+      });
+      return;
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = generateTemporaryToken(email, hashedPassword);
     const temporaryUser = await prisma.temporaryUser.upsert({
@@ -119,7 +127,6 @@ const createTemporaryUser = async (
         hashedPassword,
       },
     });
-    console.log("temporary created user :  ", temporaryUser);
     await sendVerificationEmail(email, token);
     return res.status(200).json({
       message: "Check your email to verify your email.",
@@ -132,23 +139,17 @@ const createTemporaryUser = async (
   }
 };
 
-const checkIfUserExists = async (res: Response, req: Request) => {
+const checkIfUserExists = async (email: string) => {
   try {
     const doesUserEmailExist = await prisma.user.count({
       where: {
-        email: req.body.email ?? "",
+        email,
       },
     });
 
-    if (doesUserEmailExist > 0) {
-      return res.status(409).json({
-        message: "Email already exists!",
-        success: false,
-      });
-    }
-    return;
+    return doesUserEmailExist;
   } catch (error) {
-    res.status(500).json({ message: "Unexpected error", success: false });
+    return -1;
   }
 };
 
@@ -168,7 +169,6 @@ const generateTemporaryToken = (email: string, hashedPassword: string) => {
 const verifyToken = (token: string, res: Response) => {
   try {
     const decryptedData = jwt.verify(token, process.env.TOKEN_SECRET as string);
-    console.log("decrypted token data ", decryptedData);
     return decryptedData as TokenData;
   } catch (err) {
     return null;
@@ -181,4 +181,5 @@ export {
   setCookies,
   verifySessionToken,
   verifyToken,
+  checkIfUserExists,
 };

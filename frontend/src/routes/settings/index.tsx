@@ -8,7 +8,7 @@ export const Route = createFileRoute("/settings/")({
 function RouteComponent() {
   return (
     <ProtectedRoute>
-      <div className="">Hello "/settings/"!</div>;
+      <div className="">Hello "/settings/"!</div>
     </ProtectedRoute>
   );
 }

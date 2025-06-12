@@ -26,7 +26,7 @@ const navLinks: LinkType[] = [
 
 const Sidebar: React.FC = () => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const { logout, isLoading } = useAuth();
+  const { logout, isLoading, user } = useAuth();
   return (
     <aside className="bg-secondary text-primary flex min-h-full flex-col items-center justify-between rounded-xl px-5 py-6">
       <div>
@@ -54,7 +54,15 @@ const Sidebar: React.FC = () => {
           className="hover:text-primary [&.active]:text-primary cursor-pointer duration-200"
           to="/profile"
         >
-          <CiUser size={24} />
+          {user?.profilePic ? (
+            <img
+              src={user?.profilePic}
+              className="ring-primary size-6 rounded-full ring-1 ring-offset-1"
+              alt="user profile picture"
+            />
+          ) : (
+            <CiUser size={24} />
+          )}
         </Link>
         <IoLogOutOutline
           onClick={() => setIsLogoutModalOpen(true)}
