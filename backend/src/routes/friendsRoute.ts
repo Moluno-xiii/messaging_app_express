@@ -15,10 +15,34 @@ friendsRoute.get(
             { userEmail: req.user?.email },
           ],
         },
+        include: {
+          friend: {
+            include: {
+              ProfileEmail: true,
+            },
+          },
+          user: {
+            include: {
+              ProfileEmail: true,
+            },
+          },
+        },
       });
+
+      const normalizedFriends = friends.map((friendEntry) => {
+        const isInitiator = friendEntry.userEmail === req.user?.email;
+        const friendData = isInitiator ? friendEntry.friend : friendEntry.user;
+
+        return {
+          ...friendData,
+          friendshipStatus: friendEntry.status,
+        };
+      });
+
       res.status(200).json({
         success: true,
-        data: friends,
+        data: normalizedFriends,
+        detailedData: friends,
         message: "Friends fetched successfully",
       });
     } catch (err) {
@@ -67,13 +91,11 @@ friendsRoute.get(
           status: "PENDING",
         },
       });
-      res
-        .status(200)
-        .json({
-          requests,
-          success: true,
-          message: `${type} messaes fetched successfully`,
-        });
+      res.status(200).json({
+        requests,
+        success: true,
+        message: `${type} messages fetched successfully`,
+      });
     } catch (err) {
       handleError(err, res);
     }
@@ -121,7 +143,9 @@ friendsRoute.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await deleteFriendRequest(req.params.requestId);
-      res.status(200).json({ message: "Request deleted successfully!" });
+      res
+        .status(200)
+        .json({ message: "Request deleted successfully!", success: true });
     } catch (err: unknown) {
       handleError(err, res);
     }

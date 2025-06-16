@@ -22,10 +22,16 @@ messagesRoute.get(
           ],
         },
       });
+      const friend = await prisma.profile.findUnique({
+        where: {
+          email: req.params.friendEmail,
+        },
+      });
       res.status(200).json({
         message: "Fetched messages successfully!",
         success: true,
         data: messages,
+        friend,
       });
     } catch (err) {
       handleError(err, res);
@@ -37,7 +43,7 @@ messagesRoute.post(
   "/:friendEmail",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const message = await prisma.message.create({
+      await prisma.message.create({
         data: {
           senderId: req.user?.email as string,
           receiverId: req.params.friendEmail,

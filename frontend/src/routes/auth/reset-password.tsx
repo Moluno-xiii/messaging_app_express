@@ -59,8 +59,8 @@ function RouteComponent() {
       setTimeout(() => {
         navigate({ to: "/auth/login", replace: true });
       }, 1000);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      toast.error("An unexpected error occured, try again.");
     } finally {
       setIsLoading(false);
     }

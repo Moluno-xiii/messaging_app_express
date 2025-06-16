@@ -18,9 +18,9 @@ interface Message {
   date_created: string;
   date_updated: string;
   id: string;
-  messge: string;
-  receiver_id: string;
-  sender_id: string;
+  mesasge: string;
+  receiverId: string;
+  senderId: string;
 }
 
 interface FriendRequestType {

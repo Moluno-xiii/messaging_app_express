@@ -49,6 +49,12 @@ const FriendRequest = ({ request }: { request: FriendRequestType }) => {
           ? "YOU"
           : request.requesterEmail}
       </span>
+      <span>
+        To :{" "}
+        {request.requestedToEmail === user?.email
+          ? "YOU"
+          : request.requestedToEmail}
+      </span>
       <span>Date Sent : {request.dateSent.split("T").join(", ")}</span>
       {request.dateResponded !== request.dateSent ? (
         <span>Date responded : {request.dateResponded}</span>

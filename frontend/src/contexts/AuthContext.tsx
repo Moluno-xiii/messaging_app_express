@@ -32,33 +32,14 @@ const AuthContext = createContext<ContextTypes>({
 
 const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
-  const { isPending, data } = useGetUserProfile();
-  const [isLoading, setIsLoading] = useState(isPending);
+  const { data } = useGetUserProfile();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchUserData() {
-      // console.log("dat from query hook", data);
-      setUser(data);
-      // try {
-      //   const query = await authenticatedFetch("http://localhost:7002/profile");
-
-      //   const response = await query.json();
-
-      //   if (response.success) {
-      //     toast.success("Authentication succesful");
-      //     setUser(response.user);
-      //   } else {
-      //     toast.error(response.message);
-      //     setUser(null);
-      //   }
-      //   return;
-      // } catch {
-      //   toast.error("No active session");
-      //   setUser(null);
-      // }
-    }
-
-    fetchUserData();
+    // async function fetchUserData() {}
+    setUser(data);
+    setIsLoading(false);
+    // fetchUserData();
   }, [data]);
 
   const logout = async (successCb: () => void) => {

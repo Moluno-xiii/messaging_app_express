@@ -10,7 +10,11 @@ async function getUserNotifications() {
     );
     return await request.json();
   } catch (err: unknown) {
-    console.error("error getting user notifications :", err);
+    throw new Error(
+      err instanceof Error
+        ? err.message
+        : "Error getting user notifications, try again.",
+    );
   }
 }
 

@@ -23,9 +23,8 @@ function RouteComponent() {
         return;
       }
       toast.success(message);
-    } catch (error: unknown) {
+    } catch {
       toast.error("An error occured, try again.");
-      console.error(error);
     } finally {
       setIsPending(false);
     }

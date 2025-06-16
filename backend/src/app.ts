@@ -1,14 +1,13 @@
-import "dotenv/config";
-import express, { Response, Request, NextFunction } from "express";
-import cors from "cors";
 import cookieParser from "cookie-parser";
-import indexRoute from "./routes/indexRoute";
-import authRoute from "./routes/authRoute";
+import cors from "cors";
+import "dotenv/config";
+import express, { NextFunction, Request, Response } from "express";
 import verifyJwt from "./middlewares/verifyJWT";
-import messagesRoute from "./routes/messagesRoute";
+import authRoute from "./routes/authRoute";
 import friendsRoute from "./routes/friendsRoute";
+import indexRoute from "./routes/indexRoute";
+import messagesRoute from "./routes/messagesRoute";
 import notificationRoute from "./routes/notificationRoute";
-import { checkIfUserExists } from "./utils/auth";
 import profileRoute from "./routes/profileRoute";
 
 const corsOptions = {
@@ -26,19 +25,6 @@ app.use(express.json());
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
 app.use("/friends", verifyJwt, friendsRoute);
-app.get("/me", verifyJwt, async (req: Request, res: Response) => {
-  const userData = await checkIfUserExists(req.user?.email ?? "");
-  if (userData < 1) {
-    res.status(404).json({ message: "User doesn't exist", success: false });
-    return;
-  }
-
-  res.json({
-    user: req.user,
-    success: true,
-    message: "Authenticated successfully!",
-  });
-});
 app.use("/messages", verifyJwt, messagesRoute);
 app.use("/notifications", verifyJwt, notificationRoute);
 app.use("/profile", verifyJwt, profileRoute);

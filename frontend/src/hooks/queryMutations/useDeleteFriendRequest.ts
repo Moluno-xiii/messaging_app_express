@@ -11,7 +11,7 @@ const useDeleteFriendRequest = () => {
     onSuccess: () => {
       toast.success("Request deleted successfully!");
       queryClient.invalidateQueries({
-        queryKey: ["friendRequests"],
+        queryKey: ["friendRequests", "sent"],
       });
     },
     onError: (err) => {

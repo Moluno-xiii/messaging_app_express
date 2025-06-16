@@ -5,7 +5,10 @@ const useGetFriends = () => {
   return useQuery({
     queryKey: ["friends"],
     queryFn: async () => await fetchUserFriends(),
-    staleTime: 0,
+    select: (res) => res.data,
+    staleTime: Infinity,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 };
 

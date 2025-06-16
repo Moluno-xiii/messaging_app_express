@@ -34,7 +34,6 @@ function RouteComponent() {
       profilePicture: File;
     };
 
-    console.log("profile data", data);
     if (data.profilePicture.size / 1000000 > 3) {
       toast.error(
         `Image size shouldn't be more than 3MB. \n Current size is ${Math.floor(data.profilePicture.size / 1000000)} MB`,
@@ -79,8 +78,7 @@ function RouteComponent() {
       if (response.secure_url) {
         return response.secure_url;
       }
-    } catch (error: unknown) {
-      console.error("Error uploading file to cloudinary : ", error);
+    } catch {
       setError(true);
       toast.error("Error uploading image, try again.");
     } finally {

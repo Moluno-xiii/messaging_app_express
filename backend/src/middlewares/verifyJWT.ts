@@ -1,9 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import {
-  checkIfUserExists,
-  findUserData,
-  verifySessionToken,
-} from "../utils/auth";
+import { verifySessionToken } from "../utils/auth";
 
 async function verifyJwt(req: Request, res: Response, next: NextFunction) {
   const { accessToken, refreshToken } = req.cookies;

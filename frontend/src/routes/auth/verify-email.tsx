@@ -43,7 +43,6 @@ function RouteComponent() {
             : "Unexpected error, try again.";
         setError(message);
         toast.error(message);
-        console.error("Effect error", error);
       }
     })();
   }, [token, navigate]);

@@ -99,7 +99,6 @@ const deleteFriendRequest = async (requestId: string) => {
     }
     return response;
   } catch (err) {
-    console.error("error occured while deleting friend request", err);
     throw new Error(
       err instanceof Error
         ? err.message
@@ -108,7 +107,20 @@ const deleteFriendRequest = async (requestId: string) => {
   }
 };
 
-async function fetchUserFriends() {
+export interface FriendProfile {
+  ProfileEmail: {
+    displayName: string;
+    email: string;
+    id: string;
+    profilePic: string | null;
+  }[];
+}
+
+async function fetchUserFriends(): Promise<{
+  message: string;
+  success: boolean;
+  data: FriendProfile[] | null;
+}> {
   try {
     const request = await authenticatedFetch(`http://localhost:7002/friends`, {
       method: "GET",
@@ -120,12 +132,14 @@ async function fetchUserFriends() {
     }
     return response;
   } catch (err: unknown) {
-    console.error("Error occured while fething friends : ", err);
-    throw new Error(
-      err instanceof Error
-        ? err.message
-        : "Unexpected error occured, try again",
-    );
+    return {
+      message:
+        err instanceof Error
+          ? err.message
+          : "Unexpected error occured, try again",
+      success: false,
+      data: null,
+    };
   }
 }
 

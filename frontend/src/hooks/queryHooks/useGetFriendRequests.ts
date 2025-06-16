@@ -6,6 +6,7 @@ const useGetFriendRequests = (type: "sent" | "received") => {
     queryFn: async () => await getFriendRequests(type),
     queryKey: ["friendRequests", type],
     select: (res) => res.requests,
+    staleTime: Infinity,
   });
 };
 

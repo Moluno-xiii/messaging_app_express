@@ -11,13 +11,14 @@ const getUserProfile = async (): Promise<{
       method: "GET",
     });
     const response = await request.json();
-    console.log("response from getuserprofile", response);
     return response;
-  } catch (error: unknown) {
-    console.error("Error occured while getting user profile :", error);
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occured while getting user Profile, try again";
     return {
-      message:
-        "An unexpected error occured while getting user Profile, try again",
+      message,
       success: false,
       user: null,
     };
@@ -29,7 +30,6 @@ const updateUserProfile = async (
   displayName: string,
 ): Promise<{ message?: string; success: boolean }> => {
   try {
-    console.log("I ran to update user profile");
     const request = await authenticatedFetch("http://localhost:7002/profile", {
       method: "PATCH",
       body: JSON.stringify({
@@ -38,13 +38,15 @@ const updateUserProfile = async (
       }),
     });
     const response = await request.json();
-    console.log("response from updateUserProfile :", response);
     return response;
   } catch (error: unknown) {
-    console.error("Error occured while updating user profile :", error);
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unexpected error while updating profile, try again.";
     return {
       success: false,
-      message: "Unexpected error while updating profile, try again.",
+      message,
     };
   }
 };

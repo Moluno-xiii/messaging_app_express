@@ -89,7 +89,6 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
       data: {
         email: decryptedData.email,
         hashedPassword: decryptedData.hashedPassword,
-        // profilePic: process.env.DEFAULT_PROFILE_PIC,
       },
     });
     await prisma.temporaryUser.delete({
@@ -129,7 +128,6 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
 const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { accessToken } = req.cookies;
-    console.log("accessToken", accessToken);
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
     const tokenData = verifySessionToken(accessToken, res);
@@ -138,7 +136,6 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
       res.status(400).json({ message: "Invalid token", success: false });
       return;
     }
-    console.log("Is token valid", tokenData);
     await redisClient.del(`session:${tokenData?.sessionId}`);
     res.status(200).json({ message: "Logout successful!", success: true });
   } catch (err: unknown) {

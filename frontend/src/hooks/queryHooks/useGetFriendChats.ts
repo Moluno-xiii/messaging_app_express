@@ -5,7 +5,7 @@ const useGetFriendChats = (selectedFriend: string | undefined) => {
   return useQuery({
     queryKey: ["messages", selectedFriend],
     queryFn: async () => {
-      if (!selectedFriend) return;
+      if (!selectedFriend) return null;
       return await getMessages(selectedFriend);
     },
     refetchOnWindowFocus: true,
