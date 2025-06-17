@@ -13,7 +13,6 @@ const useGetUserProfile = () => {
         toast.error(message);
         return null;
       }
-      toast.success("Profile fetched successfully!");
       setUser(user);
       return user;
     },

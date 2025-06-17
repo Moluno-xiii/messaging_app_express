@@ -1,9 +1,11 @@
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import Sidebar from "../components/Ui/Sidebar";
 import useAuth from "../hooks/useAuth";
+import NotFound from "../components/Ui/NotFound";
 
 export const Route = createRootRoute({
   component: RootComponent,
+  notFoundComponent: NotFound,
 });
 
 function RootComponent() {

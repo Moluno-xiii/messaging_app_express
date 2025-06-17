@@ -9,8 +9,8 @@ const useUpdateUserProfile = () => {
       profilePic,
       displayName,
     }: {
-      profilePic: string;
-      displayName: string;
+      profilePic?: string;
+      displayName?: string;
     }) => {
       await updateUserProfile(profilePic, displayName);
     },

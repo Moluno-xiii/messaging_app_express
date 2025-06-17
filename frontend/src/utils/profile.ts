@@ -26,8 +26,8 @@ const getUserProfile = async (): Promise<{
 };
 
 const updateUserProfile = async (
-  profilePic: string,
-  displayName: string,
+  profilePic?: string,
+  displayName?: string,
 ): Promise<{ message?: string; success: boolean }> => {
   try {
     const request = await authenticatedFetch("http://localhost:7002/profile", {

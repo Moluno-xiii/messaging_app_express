@@ -55,7 +55,36 @@ friendsRoute.post(
   "/request",
   async (req: Request, res: Response, next: NextFunction) => {
     const { friendEmail } = req.body;
+    if (friendEmail === req.user?.email) {
+      res.status(200).json({
+        message: "You can't send a friend request to your own email.",
+        success: false,
+      });
+      return;
+    }
     try {
+      const doesFriendAlreadyExist = await prisma.friend.count({
+        where: {
+          OR: [
+            {
+              friendEmail,
+              userEmail: req.user?.email,
+            },
+            {
+              friendEmail: req.user?.email,
+              userEmail: friendEmail,
+            },
+          ],
+        },
+      });
+
+      if (doesFriendAlreadyExist > 0) {
+        res
+          .status(200)
+          .json({ message: "User is already your friend.", success: false });
+        return;
+      }
+
       await prisma.request.create({
         data: {
           requestedToEmail: friendEmail,

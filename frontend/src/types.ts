@@ -45,6 +45,14 @@ interface Friend {
   staus: "OFFLINE" | "ONLINE";
   userEmail: string;
 }
+
+interface FriendProfile {
+  displayName: string;
+  email: string;
+  id: string;
+  profilePic: string | null;
+}
+
 type FriendRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 
 export type {
@@ -55,4 +63,5 @@ export type {
   Notification,
   Friend,
   FriendRequestStatus,
+  FriendProfile,
 };

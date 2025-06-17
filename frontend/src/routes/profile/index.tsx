@@ -30,11 +30,11 @@ function RouteComponent() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData) as {
-      displayName: string;
+      displayName?: string;
       profilePicture: File;
     };
 
-    if (data.profilePicture.size / 1000000 > 3) {
+    if (data.profilePicture && data.profilePicture?.size / 1000000 > 3) {
       toast.error(
         `Image size shouldn't be more than 3MB. \n Current size is ${Math.floor(data.profilePicture.size / 1000000)} MB`,
       );
@@ -43,7 +43,10 @@ function RouteComponent() {
       return;
     }
 
-    if (data.profilePicture.type.split("/")[0].toLowerCase() !== "image") {
+    if (
+      data.profilePicture.size > 0 &&
+      data.profilePicture.type.split("/")[0].toLowerCase() !== "image"
+    ) {
       toast.error("Select an image.");
       setError(true);
       setIsLoading(false);
@@ -58,6 +61,10 @@ function RouteComponent() {
   };
 
   const uploadImageToCloudinary = async (imageFile: File) => {
+    if (imageFile.size <= 0) {
+      setIsLoading(false);
+      return;
+    }
     const formData = new FormData();
     formData.append("file", imageFile);
     formData.append("upload_preset", "upload_1");
@@ -78,6 +85,7 @@ function RouteComponent() {
       if (response.secure_url) {
         return response.secure_url;
       }
+      return;
     } catch {
       setError(true);
       toast.error("Error uploading image, try again.");
@@ -99,7 +107,6 @@ function RouteComponent() {
               Display name
             </label>
             <input
-              required
               className="border-primary rounded-xl border p-2 focus:outline-none"
               type="text"
               name="displayName"
@@ -114,7 +121,6 @@ function RouteComponent() {
               </span>
             </label>
             <input
-              required
               className="border-primary rounded-xl border p-1"
               type="file"
               name="profilePicture"
@@ -132,7 +138,6 @@ function RouteComponent() {
               )
             )}
           </div>
-
           <div className="flex flex-row items-center justify-between">
             <button
               disabled={isLoading}
