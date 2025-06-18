@@ -130,7 +130,7 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
     const { accessToken } = req.cookies;
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
-    const tokenData = verifySessionToken(accessToken, res);
+    const tokenData = verifySessionToken(accessToken);
 
     if (!tokenData) {
       res.status(400).json({ message: "Invalid token", success: false });
@@ -229,7 +229,7 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    const decoded = verifySessionToken(refreshToken, res);
+    const decoded = verifySessionToken(refreshToken);
     if (!decoded) {
       res.status(401).json("Invalid refresh token");
       return;

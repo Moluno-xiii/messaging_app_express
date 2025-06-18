@@ -2,6 +2,8 @@ import { NextFunction, Request, Response, Router } from "express";
 import prisma from "../prisma";
 import { sendNotification } from "../utils/notifications";
 import { addFriend, deleteFriendRequest } from "../utils/friends";
+import { Server } from "socket.io";
+import { getUserSockets } from "../socket/socketMap";
 const friendsRoute = Router();
 
 friendsRoute.get(
@@ -55,6 +57,7 @@ friendsRoute.post(
   "/request",
   async (req: Request, res: Response, next: NextFunction) => {
     const { friendEmail } = req.body;
+    const io = req.app.get("socketio") as Server;
     if (friendEmail === req.user?.email) {
       res.status(200).json({
         message: "You can't send a friend request to your own email.",
@@ -84,11 +87,25 @@ friendsRoute.post(
           .json({ message: "User is already your friend.", success: false });
         return;
       }
-
+      const requestId = crypto.randomUUID();
+      const currentDate = new Date();
+      const friendSocket = getUserSockets(friendEmail);
+      friendSocket.forEach((id) => {
+        io.to(id).emit("receive_friend_request", {
+          requestedToEmail: friendEmail,
+          requesterEmail: req.user?.email as string,
+          id: requestId,
+          dateSent: currentDate.toISOString(),
+          dateResponded: currentDate.toISOString(),
+          status: "PENDING",
+        });
+      });
       await prisma.request.create({
         data: {
           requestedToEmail: friendEmail,
           requesterEmail: req.user?.email as string,
+          id: requestId,
+          dateSent: currentDate.toISOString(),
         },
       });
       res.status(200).json({ message: "Friend request sent.", success: true });

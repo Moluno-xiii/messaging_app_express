@@ -20,7 +20,7 @@ async function verifyJwt(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = verifySessionToken(accessToken, res);
+    const decoded = verifySessionToken(accessToken);
     if (!decoded) {
       res
         .status(401)

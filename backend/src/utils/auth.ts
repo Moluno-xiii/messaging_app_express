@@ -25,7 +25,7 @@ interface TokenData {
   email: string;
 }
 
-const verifySessionToken = (token: string, res: Response) => {
+const verifySessionToken = (token: string) => {
   try {
     const data = jwt.verify(token, process.env.TOKEN_SECRET as string);
     return data as SessionTokenData;
