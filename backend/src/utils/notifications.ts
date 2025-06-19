@@ -1,10 +1,17 @@
+import { SendNotification } from "../../types/express/socketHandlerTypes";
 import prisma from "../prisma";
 
-async function getAllUserNotifications(email: string) {
+async function getAllUserNotifications(
+  email: string,
+  type: "read" | "unread" | "all"
+) {
   try {
     const request = await prisma.notification.findMany({
       where: {
         email,
+        ...(type !== "all" && {
+          hasUserRead: type === "read",
+        }),
       },
     });
     return request;
@@ -23,43 +30,63 @@ const deleteNotification = async (email: string, id: string) => {
         id,
       },
     });
-    console.log("notification request : ", request);
     return {
       success: true,
       message: "Notification deleted successfully",
     };
   } catch (err) {
-    console.error(err);
     throw new Error(
-      err instanceof Error ? err.message : "Error deleting notifications."
+      err instanceof Error ? err.message : "Error deleting notification."
     );
   }
 };
 
-const sendNotification = async (
-  email: string,
-  message: string,
-  title: string
-) => {
+const sendNotification = async (notificationData: SendNotification) => {
   try {
     const request = await prisma.notification.create({
-      data: {
-        email,
-        title,
-        message,
-      },
+      data: notificationData,
     });
-    console.log("notification request : ", request);
     return {
       success: true,
       message: "Notification sent successfully",
     };
   } catch (err) {
-    console.error(err);
     throw new Error(
-      err instanceof Error ? err.message : "Error deleting notifications."
+      err instanceof Error ? err.message : "Error sending notification."
     );
   }
 };
 
-export { getAllUserNotifications, deleteNotification, sendNotification };
+const deleteNotificationByStatus = async (
+  status: "read" | "unread" | "all",
+  email: string
+) => {
+  try {
+    const whereClause =
+      status === "all"
+        ? { email }
+        : {
+            email,
+            hasUserRead: status === "read",
+          };
+
+    const deleted = await prisma.notification.deleteMany({
+      where: whereClause,
+    });
+    return deleted;
+  } catch (err) {
+    console.error(err);
+    throw new Error(
+      err instanceof Error
+        ? err.message
+        : "Error deleting notifications, try again."
+    );
+  }
+};
+
+export {
+  getAllUserNotifications,
+  deleteNotification,
+  sendNotification,
+  deleteNotificationByStatus,
+};

@@ -9,7 +9,9 @@ export const Route = createFileRoute("/chat/")({
 });
 
 function RouteComponent() {
-  const [selectedFriend, setSelectedFriend] = useState<string | undefined>();
+  const [selectedFriend, setSelectedFriend] = useState<string | undefined>(
+    undefined,
+  );
   return (
     <ProtectedRoute>
       <div className="flex h-full flex-row gap-x-4">

@@ -3,25 +3,34 @@ import ErrorMessage from "../../../components/Ui/ErrorMessage";
 import Loading from "../../../components/Ui/Loading";
 import useGetNotifications from "../../../hooks/queryHooks/useGetNotifications";
 import type { Notification } from "../../../types";
+import useSocket from "../../../hooks/useSocket";
 
 export const Route = createFileRoute("/notifications/others/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { data: notifications, error, isLoading } = useGetNotifications();
+  const { data: notifications, error, isLoading } = useGetNotifications("all");
+  const { readNotification } = useSocket();
 
   if (error) return <ErrorMessage message={error.message} />;
   if (isLoading) return <Loading />;
+  console.log("I received notifications ,", notifications);
 
   return (
     <div className="h-full w-full">
       <ul className="h-full w-full">
         {notifications.length > 0 ? (
-          notifications.data.map((notification: Notification) => (
+          notifications.map((notification: Notification) => (
             <li key={notification.id}>
               <p className="text-xl">{notification.title}</p>
               <p>{notification.message}</p>
+              <button
+                className="btn-error"
+                onClick={() => readNotification(notification.id)}
+              >
+                test button
+              </button>
             </li>
           ))
         ) : (

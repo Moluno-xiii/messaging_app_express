@@ -127,13 +127,18 @@ function RouteComponent() {
               onChange={handleFileChange}
             />
             {selectedImage ? (
-              <img src={selectedImage} className="size-40 rounded-xl" />
+              <img
+                src={selectedImage}
+                className="size-40 rounded-xl"
+                loading="lazy"
+              />
             ) : (
               user?.profilePic && (
                 <img
                   src={user.profilePic}
                   className="size-40 rounded-xl"
                   alt="User Profile picture"
+                  loading="lazy"
                 />
               )
             )}

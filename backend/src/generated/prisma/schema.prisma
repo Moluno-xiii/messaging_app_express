@@ -66,12 +66,13 @@ model Request {
 }
 
 model Notification {
-  id         String   @id @default(uuid())
-  title      String
-  message    String
-  email      String
-  user       User     @relation(fields: [email], references: [email])
-  receivedAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  title       String
+  message     String
+  email       String
+  hasUserRead Boolean  @default(false)
+  user        User     @relation(fields: [email], references: [email])
+  receivedAt  DateTime @default(now())
 }
 
 model Profile {

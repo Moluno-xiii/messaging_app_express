@@ -11,8 +11,10 @@ notificationRoute.get(
   "/",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const type = req.query.type as "all" | "read" | "unread";
       const notifications = await getAllUserNotifications(
-        req.user?.email as string
+        req.user?.email as string,
+        type
       );
       res.status(200).json({
         success: true,

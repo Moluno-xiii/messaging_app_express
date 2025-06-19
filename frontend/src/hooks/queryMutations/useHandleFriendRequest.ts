@@ -8,6 +8,7 @@ const useHandleFriendRequest = (
   requestStatus: FriendRequestStatus,
 ) => {
   const queryClient = useQueryClient();
+  // const { respondToFriendRequest } = useSocket();
   return useMutation({
     mutationFn: async (requestId: string) => {
       const response = await respondToFriendRequest(
@@ -17,6 +18,10 @@ const useHandleFriendRequest = (
         requestStatus,
       );
       return response;
+      // respondToFriendRequest({
+      //   sender_id: request.requesterEmail,
+      //   request_id: requestId,
+      // });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

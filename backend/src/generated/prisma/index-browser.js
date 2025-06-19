@@ -157,6 +157,7 @@ exports.Prisma.NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   email: 'email',
+  hasUserRead: 'hasUserRead',
   receivedAt: 'receivedAt'
 };
 

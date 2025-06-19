@@ -27,6 +27,7 @@ const FriendChatHeader: React.FC<PropTypes> = ({ friend, status }) => {
           src={friend.profilePic ?? "default-profile-pic.jpeg"}
           alt="Friend's profile picture"
           className={`size-12 cursor-pointer rounded-full bg-cover ring-2 ring-offset-2 ${status === "online" ? "ring-primary" : "ring-background"}`}
+          loading="lazy"
         />
         <div>
           <p className="font-semibold">

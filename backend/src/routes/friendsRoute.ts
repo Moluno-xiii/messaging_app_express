@@ -4,6 +4,9 @@ import { sendNotification } from "../utils/notifications";
 import { addFriend, deleteFriendRequest } from "../utils/friends";
 import { Server } from "socket.io";
 import { getUserSockets } from "../socket/socketMap";
+import { getDateAndId } from "../socket/handlers/notificationHandler";
+import { emit } from "../socket/socketServer";
+import { RequestStatus } from "../generated/prisma";
 const friendsRoute = Router();
 
 friendsRoute.get(
@@ -65,6 +68,15 @@ friendsRoute.post(
       });
       return;
     }
+    const { date, id: requestId } = getDateAndId();
+    const mutatedData = {
+      requestedToEmail: friendEmail,
+      requesterEmail: req.user?.email as string,
+      id: requestId,
+      dateSent: date,
+      dateResponded: date,
+      status: RequestStatus.PENDING,
+    };
     try {
       const doesFriendAlreadyExist = await prisma.friend.count({
         where: {
@@ -87,27 +99,11 @@ friendsRoute.post(
           .json({ message: "User is already your friend.", success: false });
         return;
       }
-      const requestId = crypto.randomUUID();
-      const currentDate = new Date();
-      const friendSocket = getUserSockets(friendEmail);
-      friendSocket.forEach((id) => {
-        io.to(id).emit("receive_friend_request", {
-          requestedToEmail: friendEmail,
-          requesterEmail: req.user?.email as string,
-          id: requestId,
-          dateSent: currentDate.toISOString(),
-          dateResponded: currentDate.toISOString(),
-          status: "PENDING",
-        });
-      });
+
       await prisma.request.create({
-        data: {
-          requestedToEmail: friendEmail,
-          requesterEmail: req.user?.email as string,
-          id: requestId,
-          dateSent: currentDate.toISOString(),
-        },
+        data: mutatedData,
       });
+      emit(friendEmail, "receive_friend_request", io, mutatedData);
       res.status(200).json({ message: "Friend request sent.", success: true });
     } catch (err) {
       if (
@@ -151,30 +147,47 @@ friendsRoute.get(
 friendsRoute.put(
   "/request/:requestId",
   async (req: Request, res: Response, next: NextFunction) => {
+    const io = req.app.get("socketio");
     const { requestId } = req.params;
     const { requesterEmail, requesteeEmail } = req.body;
-    try {
-      const request = await prisma.request.update({
-        where: {
-          id: requestId,
-        },
-        data: {
-          status: req.body.status,
-        },
-      });
+    const { date, id } = getDateAndId();
+    // create noti for backend, and send to ws listener.
+    const messageData = {
+      message: `Your friend request to ${requesteeEmail} was ${req.body.status.toLowerCase()}.`,
+      title: "Friend request response",
+      receivedAt: date,
+      id,
+      email: requesterEmail,
+      hasUserRead: false,
+    };
 
+    try {
+      // update backend friend request status is redundant since i'm going to delete the request regardless of the outcome.
+      // const request = await prisma.request.update({
+      //   where: {
+      //     id: requestId,
+      //   },
+      //   data: {
+      //     status: req.body.status,
+      //   },
+      // });
+
+      // accept the request and add riend on backend.
       if (req.body.status === "ACCEPTED") {
         await addFriend(requesteeEmail, requesterEmail);
+        emit(requesterEmail, "new_friend_added", io);
+        emit(requesteeEmail, "new_friend_added", io);
+        // might have to use websockets for this too.
       }
+      // delete the original request, since it has been handled
       await deleteFriendRequest(requestId);
-      await sendNotification(
-        requesterEmail,
-        `Your friend request to ${requesteeEmail} has been ${req.body.status}.`,
-        `${req.body.status} friend request.`
-      );
+      // send notification to user saying friend request has been handled.
+      // on the frontend, when this mutation has been completed, revalidate the friend route.
+      await sendNotification(messageData);
+      emit(requesterEmail, "friend_request_response", io, messageData);
       res.status(200).json({
         success: true,
-        request,
+        // request,
         message: `Request ${req.body.status} successfully!`,
       });
       return;

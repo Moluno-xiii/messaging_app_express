@@ -4,18 +4,13 @@ import useDeleteFriendRequest from "../hooks/queryMutations/useDeleteFriendReque
 import useHandleFriendRequest from "../hooks/queryMutations/useHandleFriendRequest";
 import useAuth from "../hooks/useAuth";
 import type { FriendRequestStatus, FriendRequestType } from "../types";
-import ErrorMessage from "./Ui/ErrorMessage";
-import Loading from "./Ui/Loading";
 
 interface Props {
   type: "sent" | "received";
 }
 
 const FriendRequests: React.FC<Props> = ({ type }) => {
-  const { isPending, error, data: requests } = useGetFriendRequests(type);
-
-  if (error) return <ErrorMessage message={error.message} />;
-  if (isPending) return <Loading />;
+  const { data: requests } = useGetFriendRequests(type);
 
   return (
     <ul className="flex flex-col gap-y-3">
@@ -56,9 +51,9 @@ const FriendRequest = ({ request }: { request: FriendRequestType }) => {
           : request.requestedToEmail}
       </span>
       <span>Date Sent : {request.dateSent.split("T").join(", ")}</span>
-      {request.dateResponded !== request.dateSent ? (
+      {/* {request.dateResponded !== request.dateSent ? (
         <span>Date responded : {request.dateResponded}</span>
-      ) : null}
+      ) : null} */}
       {request.status === "PENDING" &&
       request.requesterEmail !== user?.email ? (
         <div className="flex flex-row gap-x-5">

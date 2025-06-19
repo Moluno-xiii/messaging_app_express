@@ -31,6 +31,7 @@ const FriendProfileModal: React.FC<Props> = ({
               src={friend.profilePic}
               alt={`Profile picture for ${friend.displayName}`}
               className=""
+              loading="lazy"
             />
           ) : (
             <span>Not Set</span>

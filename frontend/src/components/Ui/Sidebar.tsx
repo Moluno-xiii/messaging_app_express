@@ -8,6 +8,9 @@ import { useState } from "react";
 import Modal from "./Modal";
 import useAuth from "../../hooks/useAuth";
 import { Link } from "@tanstack/react-router";
+import useGetFriendRequests from "../../hooks/queryHooks/useGetFriendRequests";
+import NotificationIndicator from "./NotificationIndicator";
+import useGetNotifications from "../../hooks/queryHooks/useGetNotifications";
 
 const navLinks: LinkType[] = [
   {
@@ -27,6 +30,11 @@ const navLinks: LinkType[] = [
 const Sidebar: React.FC = () => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const { logout, isLoading, user } = useAuth();
+  const { isPending, data } = useGetFriendRequests("received");
+  const { isPending: loadingNotifications, data: notifications } =
+    useGetNotifications("unread");
+  if (isPending || loadingNotifications) return;
+  const total = data.length + notifications.length;
   return (
     <aside className="bg-secondary text-primary flex min-h-full flex-col items-center justify-between rounded-xl px-5 py-6">
       <div>
@@ -39,13 +47,16 @@ const Sidebar: React.FC = () => {
       </div>
       <ul className="flex flex-col items-center gap-y-6 text-white md:gap-y-14">
         {navLinks.map((link: LinkType) => (
-          <li key={link.route} className="size-6 duration-200">
+          <li key={link.route} className="relative size-6 duration-200">
             <Link
               to={link.route}
               className="[&.active]:text-primary hover:text-primary text-white"
             >
               {link.component}
             </Link>
+            {link.route === "/notifications" && total > 0 ? (
+              <NotificationIndicator number={total} />
+            ) : null}
           </li>
         ))}
       </ul>
@@ -59,6 +70,7 @@ const Sidebar: React.FC = () => {
               src={user?.profilePic}
               className="ring-primary size-6 rounded-full ring-1 ring-offset-1"
               alt="user profile picture"
+              loading="lazy"
             />
           ) : (
             <CiUser size={24} />

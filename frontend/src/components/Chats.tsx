@@ -58,14 +58,7 @@ const Chats: React.FC<PropTypes> = ({ setSelectedFriend }) => {
             <li
               key={friend.ProfileEmail[0].id}
               className="border-b-foreground/20 hover:bg-primary/5 flex cursor-pointer flex-row items-center justify-between gap-3 border-b py-3 transition-all duration-200"
-              onClick={() =>
-                setSelectedFriend(
-                  // friend.userEmail === user?.email
-                  //   ? friend.friendEmail
-                  //   : friend.userEmail,
-                  friend.ProfileEmail[0].email,
-                )
-              }
+              onClick={() => setSelectedFriend(friend.ProfileEmail[0].email)}
             >
               <img
                 src={
