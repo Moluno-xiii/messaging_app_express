@@ -2,6 +2,7 @@ import { createContext, useEffect, type PropsWithChildren } from "react";
 import useAuth from "../hooks/useAuth";
 import socket from "../utils/socket";
 import { useQueryClient } from "@tanstack/react-query";
+import type { Message } from "../types";
 
 interface MessagePayload {
   message: string;
@@ -25,13 +26,23 @@ interface Notification {
   receivedAt: string;
 }
 
-interface ReceivedFriendRequest {
+interface TanstackFriendRequestType {
   requests: FriendRequest[];
   success: boolean;
   message: string;
 }
 
-interface ReceivedNotification {
+interface TanstackMessageType {
+  data: Message[];
+  message: string;
+  success: boolean;
+}
+interface TanstackLastMessageType {
+  data: Message;
+  message: string;
+  success: boolean;
+}
+interface TanstackNotificationType {
   success: boolean;
   message: string;
   data: Notification[];
@@ -73,7 +84,7 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
     });
 
     socket.on("receive_friend_request", (data: FriendRequest) => {
-      queryClient.setQueryData<ReceivedFriendRequest>(
+      queryClient.setQueryData<TanstackFriendRequestType>(
         ["friendRequests", "received"],
         (old) => {
           return {
@@ -87,7 +98,6 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
     });
 
     socket.on("new_friend_added", () => {
-      console.log("friend was added");
       queryClient.invalidateQueries({
         queryKey: ["friends"],
       });
@@ -97,10 +107,9 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
       queryClient.invalidateQueries({
         queryKey: ["notifications", "unread"],
       });
-      queryClient.setQueryData<ReceivedNotification>(
+      queryClient.setQueryData<TanstackNotificationType>(
         ["notifications", "all"],
         (old) => {
-          console.log("old data", old);
           return {
             ...old,
             data: [data],
@@ -109,10 +118,9 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
           };
         },
       );
-      queryClient.setQueryData<ReceivedNotification>(
+      queryClient.setQueryData<TanstackNotificationType>(
         ["notifications", "unread"],
         (old) => {
-          console.log("old data", old);
           return {
             ...old,
             data: [data],
@@ -121,6 +129,50 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
           };
         },
       );
+    });
+
+    socket.on("receive_message", (data: Message) => {
+      console.log("I just received a message", data);
+      queryClient.setQueryData<TanstackMessageType>(
+        ["messages", data.senderId],
+        (old) => {
+          console.log("Old friend messages", old);
+          if (!old) {
+            return {
+              data: [data],
+              message: "Fetched messages successfully",
+              success: true,
+            };
+          }
+          return {
+            ...old,
+            data: [...old.data, data],
+          };
+        },
+      );
+      queryClient.setQueryData<TanstackLastMessageType>(
+        ["lastMessage", data.senderId],
+        (old) => {
+          console.log("Old last message", old);
+          if (!old) {
+            return {
+              data,
+              message: "Message fetched successfully",
+              success: true,
+            };
+          }
+          return {
+            ...old,
+            data,
+          };
+        },
+      );
+      // queryClient.invalidateQueries({
+      //   queryKey: ["lastMessage", data.senderId],
+      // });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["messages", data.senderId],
+      // });
     });
 
     return () => {
@@ -146,11 +198,10 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const readNotification = (id: string) => {
     socket.emit("read_notification", id);
-    queryClient.setQueryData<ReceivedNotification>(
+    queryClient.setQueryData<TanstackNotificationType>(
       ["notifications", "unread"],
       (old) => {
         const oldData = old?.data ?? [];
-        console.log("old daa", old);
         return {
           ...old,
           data: oldData?.filter((n) => n.id !== id),
@@ -186,8 +237,4 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 export { SocketContext };
 export default SocketProvider;
-
-// fetch other notifications alongside friend requests, display the total number of both of them.
-// other notifications should only fetch the ones that havent been read on the sidebar component, but fetch everything on the main component.
-// when user accepts or rejects friend requests, the notification count disappears.
-// when user reads a notification, mark as unread also, display change on the sidebar number.
+// remove unnecessary context functions, get socket object and call where needed.

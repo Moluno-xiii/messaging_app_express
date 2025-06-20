@@ -126,7 +126,7 @@ async function fetchUserFriends(): Promise<{
       method: "GET",
     });
     const response = await request.json();
-
+    console.log("Fetched user frineds successfuly : ", response);
     if (!response.success) {
       throw new Error(response.message ?? "Something went wrong, try again");
     }

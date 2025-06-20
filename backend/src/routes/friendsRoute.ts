@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response, Router } from "express";
-import prisma from "../prisma";
-import { sendNotification } from "../utils/notifications";
-import { addFriend, deleteFriendRequest } from "../utils/friends";
 import { Server } from "socket.io";
-import { getUserSockets } from "../socket/socketMap";
+import { RequestStatus } from "../generated/prisma";
+import prisma from "../prisma";
 import { getDateAndId } from "../socket/handlers/notificationHandler";
 import { emit } from "../socket/socketServer";
-import { RequestStatus } from "../generated/prisma";
+import { addFriend, deleteFriendRequest } from "../utils/friends";
+import { sendNotification } from "../utils/notifications";
 const friendsRoute = Router();
 
 friendsRoute.get(
@@ -33,7 +32,6 @@ friendsRoute.get(
           },
         },
       });
-
       const normalizedFriends = friends.map((friendEntry) => {
         const isInitiator = friendEntry.userEmail === req.user?.email;
         const friendData = isInitiator ? friendEntry.friend : friendEntry.user;
@@ -115,6 +113,15 @@ friendsRoute.post(
           success: false,
         });
         return;
+      } else if (
+        (err as any).code === "P2003" &&
+        (err as any).meta?.modelName?.includes("Request")
+      ) {
+        res.status(404).json({
+          message: "User doesn't exist!",
+          success: false,
+        });
+        return;
       }
       handleError(err, res);
     }
@@ -151,7 +158,7 @@ friendsRoute.put(
     const { requestId } = req.params;
     const { requesterEmail, requesteeEmail } = req.body;
     const { date, id } = getDateAndId();
-    // create noti for backend, and send to ws listener.
+
     const messageData = {
       message: `Your friend request to ${requesteeEmail} was ${req.body.status.toLowerCase()}.`,
       title: "Friend request response",
@@ -162,32 +169,16 @@ friendsRoute.put(
     };
 
     try {
-      // update backend friend request status is redundant since i'm going to delete the request regardless of the outcome.
-      // const request = await prisma.request.update({
-      //   where: {
-      //     id: requestId,
-      //   },
-      //   data: {
-      //     status: req.body.status,
-      //   },
-      // });
-
-      // accept the request and add riend on backend.
       if (req.body.status === "ACCEPTED") {
         await addFriend(requesteeEmail, requesterEmail);
         emit(requesterEmail, "new_friend_added", io);
         emit(requesteeEmail, "new_friend_added", io);
-        // might have to use websockets for this too.
       }
-      // delete the original request, since it has been handled
       await deleteFriendRequest(requestId);
-      // send notification to user saying friend request has been handled.
-      // on the frontend, when this mutation has been completed, revalidate the friend route.
       await sendNotification(messageData);
       emit(requesterEmail, "friend_request_response", io, messageData);
       res.status(200).json({
         success: true,
-        // request,
         message: `Request ${req.body.status} successfully!`,
       });
       return;

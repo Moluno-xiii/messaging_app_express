@@ -19,6 +19,15 @@ interface FriendRequestType {
 
 interface MessageRequestType {}
 
-type HandlerPayloads = SendNotification | FriendRequestType;
+interface MessageData {
+  senderId: string;
+  receiverId: string;
+  mesasge: string;
+  id: string;
+  date_created: string;
+  date_updated: string;
+}
+
+type HandlerPayloads = SendNotification | FriendRequestType | MessageData;
 
 export type { SendNotification, HandlerPayloads };

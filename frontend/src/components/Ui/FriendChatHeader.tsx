@@ -3,14 +3,15 @@ import { CiSearch } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
 import { IoCallOutline } from "react-icons/io5";
-import { PiDotsThreeBold } from "react-icons/pi";
 import FriendProfileModal from "../FriendProfileModal";
-import type { FriendProfile } from "../../types";
+import { BsThreeDots } from "react-icons/bs";
+
+import type { FriendDetails } from "../../types";
 interface PropTypes {
   status: string;
-  friend: FriendProfile;
+  friendDetails: FriendDetails;
 }
-const FriendChatHeader: React.FC<PropTypes> = ({ friend, status }) => {
+const FriendChatHeader: React.FC<PropTypes> = ({ status, friendDetails }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isFriendProfileOpen, setIsFriendProfileOpen] = useState(false);
 
@@ -20,20 +21,21 @@ const FriendChatHeader: React.FC<PropTypes> = ({ friend, status }) => {
   };
   // const isOnline = true;
   return (
-    <header className="relative flex flex-row items-center justify-between gap-4 rounded-xl bg-white p-4">
+    <header className="sticky top-0 flex flex-row items-center justify-between gap-4 rounded-xl bg-white p-4">
       <section className="flex flex-row items-center gap-x-2">
         <img
           onClick={() => handleFriendProfile(true)}
-          src={friend.profilePic ?? "default-profile-pic.jpeg"}
+          src={friendDetails.profilePic ?? "default-profile-pic.jpeg"}
           alt="Friend's profile picture"
           className={`size-12 cursor-pointer rounded-full bg-cover ring-2 ring-offset-2 ${status === "online" ? "ring-primary" : "ring-background"}`}
           loading="lazy"
         />
         <div>
           <p className="font-semibold">
-            {friend.displayName.length > 15
-              ? friend.displayName.split("").slice(0, 15).join("") + "..."
-              : friend.displayName}
+            {friendDetails.displayName.length > 15
+              ? friendDetails.displayName.split("").slice(0, 15).join("") +
+                "..."
+              : friendDetails.displayName}
           </p>
           <span className="text-foreground/50 text-xs">
             {/* {isOnline ? "Online" : "Offline"} */}
@@ -51,7 +53,7 @@ const FriendChatHeader: React.FC<PropTypes> = ({ friend, status }) => {
         </div>
         <div className="flex flex-row items-center gap-x-4">
           <CiSearch className="hover:text-primary size-6 cursor-pointer transition-all duration-200" />
-          <PiDotsThreeBold
+          <BsThreeDots
             onClick={() => setIsDropDownOpen(true)}
             className="hover:text-primary size-6 cursor-pointer transition-all duration-200"
           />
@@ -62,7 +64,7 @@ const FriendChatHeader: React.FC<PropTypes> = ({ friend, status }) => {
       ) : null}
       {isFriendProfileOpen ? (
         <FriendProfileModal
-          friend={friend}
+          friendDetails={friendDetails}
           handleFriendProfile={handleFriendProfile}
         />
       ) : null}

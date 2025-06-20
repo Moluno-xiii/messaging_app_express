@@ -1,35 +1,38 @@
-import type { FriendProfile } from "../types";
 import Modal from "./Ui/Modal";
 
 interface Props {
-  friend: FriendProfile;
+  friendDetails: {
+    displayName: string;
+    profilePic: string | null;
+    email: string;
+  };
   handleFriendProfile: (state: boolean) => void;
 }
 
 const FriendProfileModal: React.FC<Props> = ({
-  friend,
+  friendDetails,
   handleFriendProfile,
 }) => {
   return (
     <Modal
-      title={friend.displayName + "'s" + " " + "Profile"}
+      title={friendDetails.displayName + "'s" + " " + "Profile"}
       handleClose={() => handleFriendProfile(false)}
     >
       <div className="flex w-full flex-col gap-y-2">
         <div className="flex flex-col gap-y-0.5">
           <p className="text-primary text-lg font-semibold">Display Name</p>
-          <span>{friend.displayName}</span>
+          <span>{friendDetails.displayName}</span>
         </div>
         <div className="flex flex-col gap-y-2">
           <p className="text-primary text-lg font-semibold">Email Address</p>
-          <span>{friend.email}</span>
+          <span>{friendDetails.email}</span>
         </div>
         <div>
           <p className="text-primary text-lg font-semibold">Profile Picture</p>
-          {friend.profilePic ? (
+          {friendDetails.profilePic ? (
             <img
-              src={friend.profilePic}
-              alt={`Profile picture for ${friend.displayName}`}
+              src={friendDetails.profilePic}
+              alt={`Profile picture for ${friendDetails.displayName}`}
               className=""
               loading="lazy"
             />

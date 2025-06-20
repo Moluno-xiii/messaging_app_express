@@ -22,6 +22,29 @@ const getMessages = async (friendEmail: string) => {
     );
   }
 };
+const getLastMessage = async (friendEmail: string) => {
+  try {
+    if (!friendEmail) throw new Error("Invalid email,");
+    const request = await authenticatedFetch(
+      `http://localhost:7002/messages/${friendEmail}/last`,
+      {
+        method: "GET",
+      },
+    );
+    const response = await request.json();
+    console.log("Lat message fn data", response);
+    if (!response.success) {
+      throw new Error(response.message);
+    }
+    return response;
+  } catch (err) {
+    throw new Error(
+      err instanceof Error
+        ? err.message
+        : "Unexpected error occured, try again",
+    );
+  }
+};
 
 const sendMessage = async (friendEmail: string, message: string) => {
   try {
@@ -47,4 +70,4 @@ const sendMessage = async (friendEmail: string, message: string) => {
   }
 };
 
-export { getMessages, sendMessage };
+export { getMessages, getLastMessage, sendMessage };

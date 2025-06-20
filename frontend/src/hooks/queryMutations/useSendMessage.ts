@@ -12,6 +12,9 @@ const useSendMessage = (selectedFriend: string) => {
       queryClient.invalidateQueries({
         queryKey: ["messages", selectedFriend],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["lastMessage", selectedFriend],
+      });
     },
     onError: (err) => {
       toast.error(err.message);

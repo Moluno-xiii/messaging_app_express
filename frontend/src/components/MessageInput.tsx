@@ -15,7 +15,7 @@ const MessageInput = ({ selectedFriend }: { selectedFriend: string }) => {
   return (
     <form
       onClick={handleSubmit}
-      className="flex flex-row items-center gap-x-2 rounded-xl bg-white p-2"
+      className="sticky bottom-0 flex flex-row items-center gap-x-2 rounded-xl bg-white p-2"
     >
       <textarea
         placeholder="Write message..."

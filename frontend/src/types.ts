@@ -53,6 +53,12 @@ interface FriendProfile {
   profilePic: string | null;
 }
 
+interface FriendDetails {
+  profilePic: string | null;
+  email: string;
+  displayName: string;
+}
+
 type FriendRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 
 export type {
@@ -64,4 +70,5 @@ export type {
   Friend,
   FriendRequestStatus,
   FriendProfile,
+  FriendDetails,
 };
