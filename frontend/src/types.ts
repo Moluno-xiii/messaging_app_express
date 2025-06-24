@@ -59,6 +59,11 @@ interface FriendDetails {
   displayName: string;
 }
 
+interface WsOnlineStatus {
+  userStatus: "online" | "offline";
+  friendEmail: string;
+}
+
 type FriendRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
 
 export type {
@@ -71,4 +76,5 @@ export type {
   FriendRequestStatus,
   FriendProfile,
   FriendDetails,
+  WsOnlineStatus,
 };

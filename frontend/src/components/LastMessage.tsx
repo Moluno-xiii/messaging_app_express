@@ -1,24 +1,30 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
-import ErrorMessage from "./Ui/ErrorMessage";
-import { getLastMessage } from "../utils/messages";
+import { useEffect, useState } from "react";
+import useGetLastMessage from "../hooks/queryHooks/useGetLastMessage";
 import { ISOToString } from "../utils/helpers";
+import socket from "../utils/socket";
+import ErrorMessage from "./Ui/ErrorMessage";
 
 interface Props {
   friendEmail: string;
 }
 const LastMessage: React.FC<Props> = ({ friendEmail }) => {
-  const { data, error } = useSuspenseQuery({
-    queryKey: ["lastMessage", friendEmail],
-    queryFn: async () => {
-      return await getLastMessage(friendEmail);
-    },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
-    staleTime: Infinity,
-    select: (res) => res.data,
-  });
+  const [isUserTyping, setIsUserTyping] = useState(false);
+  const { error, data } = useGetLastMessage(friendEmail);
+
+  useEffect(() => {
+    const handler = (data: { selectedFriend: string; status: boolean }) => {
+      if (data.status !== isUserTyping) {
+        setIsUserTyping(data.status);
+      }
+    };
+
+    socket.on("is_user_typing", handler);
+    return () => {
+      socket.off("is_user_typing", handler);
+    };
+  }, [isUserTyping]);
+
   if (error) return <ErrorMessage message={error.message} />;
-  console.log("data", data);
   if (!data)
     return (
       <span className="text-foreground/50 text-sm italic">
@@ -27,11 +33,15 @@ const LastMessage: React.FC<Props> = ({ friendEmail }) => {
     );
   return (
     <div className="text-foreground/70 flex flex-row items-center justify-between text-sm">
-      <span className="">
-        {data.mesasge.length > 35
-          ? data.mesasge.split("").slice(0, 35).join("") + "..."
-          : data.mesasge}
-      </span>
+      {isUserTyping ? (
+        <span className="text-primary italic">Typing... </span>
+      ) : (
+        <span className="">
+          {data.mesasge.length > 34
+            ? data.mesasge.split("").slice(0, 34).join("") + "..."
+            : data.mesasge}
+        </span>
+      )}
       <span className="">{ISOToString(data.date_created).split(",")[3]}</span>
     </div>
   );

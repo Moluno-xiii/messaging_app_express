@@ -15,7 +15,7 @@ const ChatDetails: React.FC<PropTypes> = ({ friendDetails }) => {
       <div className="flex min-h-full flex-1">
         <Suspense
           fallback={
-            <span className="flex min-h-[calc(100dvh-200px)] flex-col items-center justify-center italic">
+            <span className="flex min-h-full w-full flex-col items-center justify-center italic">
               Loading conversations...
             </span>
           }

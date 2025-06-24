@@ -10,7 +10,7 @@ const addFriend = async (formData: {
 }> => {
   try {
     const query = await authenticatedFetch(
-      "http://localhost:7002/friends/request",
+      `${import.meta.env.VITE_API_URL}/friends/request`,
       {
         method: "POST",
         body: JSON.stringify(formData),
@@ -31,7 +31,7 @@ const addFriend = async (formData: {
 const getFriendRequests = async (type: "sent" | "received") => {
   try {
     const request = await authenticatedFetch(
-      `http://localhost:7002/friends/request/${type}`,
+      `${import.meta.env.VITE_API_URL}/friends/request/${type}`,
       {
         method: "GET",
       },
@@ -62,7 +62,7 @@ const respondToFriendRequest = async (
 ) => {
   try {
     const request = await authenticatedFetch(
-      `http://localhost:7002/friends/request/${requestId}`,
+      `${import.meta.env.VITE_API_URL}/friends/request/${requestId}`,
       {
         method: "PUT",
         body: JSON.stringify({ status, requesterEmail, requesteeEmail }),
@@ -88,7 +88,7 @@ const respondToFriendRequest = async (
 const deleteFriendRequest = async (requestId: string) => {
   try {
     const request = await authenticatedFetch(
-      `http://localhost:7002/friends/request/${requestId}`,
+      `${import.meta.env.VITE_API_URL}/friends/request/${requestId}`,
       {
         method: "DELETE",
       },
@@ -122,11 +122,13 @@ async function fetchUserFriends(): Promise<{
   data: FriendProfile[] | null;
 }> {
   try {
-    const request = await authenticatedFetch(`http://localhost:7002/friends`, {
-      method: "GET",
-    });
+    const request = await authenticatedFetch(
+      `${import.meta.env.VITE_API_URL}/friends`,
+      {
+        method: "GET",
+      },
+    );
     const response = await request.json();
-    console.log("Fetched user frineds successfuly : ", response);
     if (!response.success) {
       throw new Error(response.message ?? "Something went wrong, try again");
     }

@@ -7,9 +7,12 @@ const getUserProfile = async (): Promise<{
   user: User | null;
 }> => {
   try {
-    const request = await authenticatedFetch("http://localhost:7002/profile", {
-      method: "GET",
-    });
+    const request = await authenticatedFetch(
+      `${import.meta.env.VITE_API_URL}/profile`,
+      {
+        method: "GET",
+      },
+    );
     const response = await request.json();
     return response;
   } catch (error) {
@@ -30,13 +33,16 @@ const updateUserProfile = async (
   displayName?: string,
 ): Promise<{ message?: string; success: boolean }> => {
   try {
-    const request = await authenticatedFetch("http://localhost:7002/profile", {
-      method: "PATCH",
-      body: JSON.stringify({
-        profilePic,
-        displayName,
-      }),
-    });
+    const request = await authenticatedFetch(
+      `${import.meta.env.VITE_API_URL}/profile`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          profilePic,
+          displayName,
+        }),
+      },
+    );
     const response = await request.json();
     return response;
   } catch (error: unknown) {

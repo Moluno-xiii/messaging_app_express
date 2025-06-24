@@ -5,7 +5,6 @@ const useGetFriendChats = (selectedFriend: string | undefined) => {
   return useSuspenseQuery({
     queryKey: ["messages", selectedFriend],
     queryFn: async () => {
-      console.log("I ran to fetch again");
       if (!selectedFriend) return null;
       return await getMessages(selectedFriend);
     },

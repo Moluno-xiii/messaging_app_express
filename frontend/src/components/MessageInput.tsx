@@ -1,11 +1,13 @@
 import { FiSend } from "react-icons/fi";
 import useSendMessage from "../hooks/queryMutations/useSendMessage";
+import socket from "../utils/socket";
 
 const MessageInput = ({ selectedFriend }: { selectedFriend: string }) => {
   const sendMessageMutation = useSendMessage(selectedFriend);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    socket.emit("is_typing", { selectedFriend, status: false });
     const data = Object.fromEntries(formData) as { message: string };
     if (data.message.trim().length < 1) return;
     sendMessageMutation.mutate(data.message);
@@ -27,6 +29,7 @@ const MessageInput = ({ selectedFriend }: { selectedFriend: string }) => {
           const target = e.currentTarget;
           target.style.height = "auto";
           target.style.height = `${Math.min(target.scrollHeight, 400)}px`;
+          socket.emit("is_typing", { selectedFriend, status: true });
         }}
       />
       <button

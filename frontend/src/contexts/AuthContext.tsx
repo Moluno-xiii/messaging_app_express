@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import toast from "react-hot-toast";
 import useGetUserProfile from "../hooks/queryHooks/useGetUserProfile";
+import socket from "../utils/socket";
 
 export interface User {
   id: string;
@@ -36,16 +37,14 @@ const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // async function fetchUserData() {}
     setUser(data);
     setIsLoading(false);
-    // fetchUserData();
   }, [data]);
 
   const logout = async (successCb: () => void) => {
     try {
       setIsLoading(true);
-      const req = await fetch("http://localhost:7002/auth/logout", {
+      const req = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,15 +53,16 @@ const AuthContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         mode: "cors",
       });
       const { success, message } = await req.json();
-
+      socket.emit("logout");
       setUser(null);
       successCb();
       if (!success) {
         throw new Error(message);
       }
       toast.success(message);
-    } catch {
+    } catch (err: unknown) {
       toast.error("Logout failed");
+      console.error("logout error", err);
     } finally {
       setIsLoading(false);
     }

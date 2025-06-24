@@ -10,7 +10,7 @@ const login = async (formData: {
   user: User;
 }> => {
   try {
-    const request = await fetch("http://localhost:7002/auth/login", {
+    const request = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -38,7 +38,7 @@ const signup = async (formData: {
   message?: string;
 }> => {
   try {
-    const query = await fetch("http://localhost:7002/auth/signup", {
+    const query = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -67,7 +67,7 @@ const testSignup = async (formData: {
   message: string;
 }> => {
   try {
-    const query = await fetch("http://localhost:7002/auth/signup", {
+    const query = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -90,13 +90,16 @@ const testSignup = async (formData: {
 
 const forgotPassword = async (email: string) => {
   try {
-    const request = await fetch("http://localhost:7002/auth/forgot-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/Json",
+    const request = await fetch(
+      `${import.meta.env.VITE_API_URL}/auth/forgot-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/Json",
+        },
+        body: JSON.stringify({ email }),
       },
-      body: JSON.stringify({ email }),
-    });
+    );
     const response = await request.json();
     return response;
   } catch (error: unknown) {
@@ -108,13 +111,16 @@ const forgotPassword = async (email: string) => {
 
 const verifyToken = async (token: string) => {
   try {
-    const request = await fetch("http://localhost:7002/auth/verify-email", {
-      method: "POST",
-      body: JSON.stringify({ token }),
-      headers: {
-        "Content-Type": "Application/Json",
+    const request = await fetch(
+      `${import.meta.env.VITE_API_URL}/auth/verify-email`,
+      {
+        method: "POST",
+        body: JSON.stringify({ token }),
+        headers: {
+          "Content-Type": "Application/Json",
+        },
       },
-    });
+    );
     const response = await request.json();
     return response;
   } catch {
@@ -124,13 +130,16 @@ const verifyToken = async (token: string) => {
 
 const resetPassword = async (data: { token: string; password: string }) => {
   try {
-    const request = await fetch("http://localhost:7002/auth/reset-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/Json",
+    const request = await fetch(
+      `${import.meta.env.VITE_API_URL}/auth/reset-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/Json",
+        },
+        body: JSON.stringify(data),
       },
-      body: JSON.stringify(data),
-    });
+    );
     const response = await request.json();
     return response;
   } catch {

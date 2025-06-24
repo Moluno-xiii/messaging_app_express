@@ -1,4 +1,4 @@
-import { useState, type SetStateAction } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import { CiSearch } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
@@ -6,20 +6,38 @@ import { IoCallOutline } from "react-icons/io5";
 import FriendProfileModal from "../FriendProfileModal";
 import { BsThreeDots } from "react-icons/bs";
 
-import type { FriendDetails } from "../../types";
+import type { FriendDetails, WsOnlineStatus } from "../../types";
+import socket from "../../utils/socket";
 interface PropTypes {
   status: string;
   friendDetails: FriendDetails;
 }
-const FriendChatHeader: React.FC<PropTypes> = ({ status, friendDetails }) => {
+const FriendChatHeader: React.FC<PropTypes> = ({ friendDetails }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isFriendProfileOpen, setIsFriendProfileOpen] = useState(false);
+  const [onlineStatus, setOnlineStatus] = useState("offline");
 
   const handleFriendProfile = (state: boolean) => {
     setIsDropDownOpen(false);
     setIsFriendProfileOpen(state);
   };
-  // const isOnline = true;
+
+  useEffect(() => {
+    socket.emit("is_online", friendDetails.email);
+
+    const handler = (data: WsOnlineStatus) => {
+      console.log("is friend online", data);
+      if (data.userStatus !== onlineStatus) {
+        setOnlineStatus(data.userStatus);
+      }
+      return;
+    };
+    socket.on("is_friend_online", handler);
+    return () => {
+      socket.off("is_friend_online", handler);
+    };
+  }, [onlineStatus, friendDetails.email]);
+
   return (
     <header className="sticky top-0 flex flex-row items-center justify-between gap-4 rounded-xl bg-white p-4">
       <section className="flex flex-row items-center gap-x-2">
@@ -27,7 +45,7 @@ const FriendChatHeader: React.FC<PropTypes> = ({ status, friendDetails }) => {
           onClick={() => handleFriendProfile(true)}
           src={friendDetails.profilePic ?? "default-profile-pic.jpeg"}
           alt="Friend's profile picture"
-          className={`size-12 cursor-pointer rounded-full bg-cover ring-2 ring-offset-2 ${status === "online" ? "ring-primary" : "ring-background"}`}
+          className={`size-12 cursor-pointer rounded-full bg-cover ring-2 ring-offset-2 ${onlineStatus === "online" ? "ring-primary" : "ring-background"}`}
           loading="lazy"
         />
         <div>
@@ -37,10 +55,7 @@ const FriendChatHeader: React.FC<PropTypes> = ({ status, friendDetails }) => {
                 "..."
               : friendDetails.displayName}
           </p>
-          <span className="text-foreground/50 text-xs">
-            {/* {isOnline ? "Online" : "Offline"} */}
-            {status}
-          </span>
+          <span className="text-foreground/50 text-xs">{onlineStatus}</span>
         </div>
       </section>
       <section className="flex flex-row gap-x-5">

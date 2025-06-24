@@ -102,6 +102,7 @@ function RouteComponent() {
           onSubmit={handleSubmit}
           className="flex flex-col gap-y-4"
         >
+          <span>{user?.email}</span>
           <div className="flex flex-col gap-y-2">
             <label className="text-primary" htmlFor="diplayName">
               Display name

@@ -4,7 +4,7 @@ const getMessages = async (friendEmail: string) => {
   try {
     if (!friendEmail) throw new Error("Invalid email,");
     const request = await authenticatedFetch(
-      `http://localhost:7002/messages/${friendEmail}`,
+      `${import.meta.env.VITE_API_URL}/messages/${friendEmail}`,
       {
         method: "GET",
       },
@@ -26,13 +26,12 @@ const getLastMessage = async (friendEmail: string) => {
   try {
     if (!friendEmail) throw new Error("Invalid email,");
     const request = await authenticatedFetch(
-      `http://localhost:7002/messages/${friendEmail}/last`,
+      `${import.meta.env.VITE_API_URL}/messages/${friendEmail}/last`,
       {
         method: "GET",
       },
     );
     const response = await request.json();
-    console.log("Lat message fn data", response);
     if (!response.success) {
       throw new Error(response.message);
     }
@@ -50,7 +49,7 @@ const sendMessage = async (friendEmail: string, message: string) => {
   try {
     if (!friendEmail) throw new Error("Invalid email,");
     const request = await authenticatedFetch(
-      `http://localhost:7002/messages/${friendEmail}`,
+      `${import.meta.env.VITE_API_URL}/messages/${friendEmail}`,
       {
         method: "POST",
         body: JSON.stringify({ message }),

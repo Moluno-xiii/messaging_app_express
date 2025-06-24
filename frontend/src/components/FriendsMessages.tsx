@@ -8,7 +8,6 @@ interface Props {
 const FriendsMessages: React.FC<Props> = ({ friendDetails }) => {
   const { data: messages, error } = useGetFriendChats(friendDetails.email);
   if (error) return <ErrorMessage message={error.message} />;
-  console.log("messages", messages);
   return (
     <div className="flex-1">
       <ul className="scrollbar-none flex h-full flex-1 flex-col gap-y-5 overflow-y-scroll rounded-xl bg-white p-3">

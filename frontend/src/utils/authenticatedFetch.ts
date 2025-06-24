@@ -118,8 +118,7 @@ async function handleTokenRefresh(
 async function performTokenRefresh(): Promise<void> {
   try {
     const refreshResponse: Response = await fetch(
-      "http://localhost:7002/auth/refresh",
-      // load route from env, conditionally.
+      `${import.meta.env.VITE_API_URL}/auth/refresh`,
       {
         method: "POST",
         credentials: "include",

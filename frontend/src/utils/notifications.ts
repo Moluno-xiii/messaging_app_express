@@ -3,7 +3,7 @@ import authenticatedFetch from "./authenticatedFetch";
 async function getUserNotifications(type: "read" | "unread" | "all" = "all") {
   try {
     const request = await authenticatedFetch(
-      `http://localhost:7002/notifications?type=${type}`,
+      `${import.meta.env.VITE_API_URL}/notifications?type=${type}`,
       {
         method: "GET",
       },

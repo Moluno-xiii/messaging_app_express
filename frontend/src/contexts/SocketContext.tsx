@@ -132,11 +132,9 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
     });
 
     socket.on("receive_message", (data: Message) => {
-      console.log("I just received a message", data);
       queryClient.setQueryData<TanstackMessageType>(
         ["messages", data.senderId],
         (old) => {
-          console.log("Old friend messages", old);
           if (!old) {
             return {
               data: [data],
@@ -150,10 +148,10 @@ const SocketProvider: React.FC<PropsWithChildren> = ({ children }) => {
           };
         },
       );
+
       queryClient.setQueryData<TanstackLastMessageType>(
         ["lastMessage", data.senderId],
         (old) => {
-          console.log("Old last message", old);
           if (!old) {
             return {
               data,
