@@ -4,8 +4,16 @@ import { verifySessionToken } from "../utils/auth";
 import { CustomSocket } from "../../types/express/socket";
 import * as cookie from "cookie";
 import messageHandler from "./handlers/messageHandler";
-import { addUserSocket, getUserSockets, removeUserSocket } from "./socketMap";
-import { HandlerPayloads } from "../../types/express/socketHandlerTypes";
+import {
+  addUserSocket,
+  checkUserStatus,
+  getUserSockets,
+  removeUserSocket,
+} from "./socketMap";
+import {
+  HandlerPayloads,
+  Typing,
+} from "../../types/express/socketHandlerTypes";
 import prisma from "../prisma";
 
 export const initializeSocket = (httpServer: HttpServer) => {
@@ -50,13 +58,19 @@ export const initializeSocket = (httpServer: HttpServer) => {
 
   io.on("connection", (socket: CustomSocket) => {
     console.log(`User ${socket.userEmail} connected with ${socket.id}`);
-    const userId = socket.userEmail as string;
 
+    const userId = socket.userEmail as string;
     if (userId) {
       addUserSocket(userId, socket.id);
     }
 
-    // messageHandler(socket, io);
+    // const userStatus = checkUserStatus(userId);
+
+    // emit(userId, "is_friend_online", io, {
+    //   userStatus,
+    //   friendEmail: userId,
+    // });
+
     socket.on("read_notification", async (id) => {
       await prisma.notification.update({
         where: {
@@ -66,11 +80,21 @@ export const initializeSocket = (httpServer: HttpServer) => {
           hasUserRead: true,
         },
       });
-
-      // frontend sends ws_handler request.
-      // matches this handler.
-      // updates on backend.
     });
+
+    socket.on("is_typing", (data: Typing) => {
+      emit(data.selectedFriend, "is_user_typing", io, data);
+    });
+
+    socket.on("is_online", (friendEmail: string) => {
+      const userStatus = checkUserStatus(friendEmail);
+      emit(userId, "is_friend_online", io, { userStatus, friendEmail });
+    });
+
+    socket.on("logout", () => {
+      removeUserSocket(userId, socket.id);
+    });
+
     socket.on("disconnect", (reason) => {
       console.log(`User ${socket.userEmail} disconnected due to  ${reason}`);
       removeUserSocket(userId, socket.id);

@@ -27,7 +27,21 @@ interface MessageData {
   date_created: string;
   date_updated: string;
 }
+interface Typing {
+  selectedFriend: string;
+  status: boolean;
+}
 
-type HandlerPayloads = SendNotification | FriendRequestType | MessageData;
+interface UserStatus {
+  userStatus: "online" | "offline";
+  friendEmail: string;
+}
 
-export type { SendNotification, HandlerPayloads };
+type HandlerPayloads =
+  | SendNotification
+  | FriendRequestType
+  | MessageData
+  | Typing
+  | UserStatus;
+
+export type { SendNotification, HandlerPayloads, Typing };

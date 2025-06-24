@@ -20,4 +20,13 @@ const removeUserSocket = (userId: string, socketId: string) => {
   }
 };
 
-export { addUserSocket, getUserSockets, removeUserSocket };
+const checkUserStatus = (userId: string): "online" | "offline" => {
+  const userSockets = userSocketMap.get(userId);
+  if (userSockets?.size ?? 0 > 0) {
+    return "online";
+  } else {
+    return "offline";
+  }
+};
+
+export { addUserSocket, getUserSockets, removeUserSocket, checkUserStatus };
