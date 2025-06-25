@@ -9,7 +9,6 @@ import { BsThreeDots } from "react-icons/bs";
 import type { FriendDetails, WsOnlineStatus } from "../../types";
 import socket from "../../utils/socket";
 interface PropTypes {
-  status: string;
   friendDetails: FriendDetails;
 }
 const FriendChatHeader: React.FC<PropTypes> = ({ friendDetails }) => {
@@ -39,7 +38,7 @@ const FriendChatHeader: React.FC<PropTypes> = ({ friendDetails }) => {
   }, [onlineStatus, friendDetails.email]);
 
   return (
-    <header className="sticky top-0 flex flex-row items-center justify-between gap-4 rounded-xl bg-white p-4">
+    <header className="bg-base sticky top-0 flex flex-row items-center justify-between gap-4 rounded-xl p-4">
       <section className="flex flex-row items-center gap-x-2">
         <img
           onClick={() => handleFriendProfile(true)}

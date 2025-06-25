@@ -51,7 +51,7 @@ const Chats: React.FC = () => {
     <div className="flex h-full w-full flex-row gap-x-4">
       <section className="scrollbar-none flex h-full max-w-[390px] min-w-sm flex-col gap-y-2 overflow-y-scroll">
         <ChatsHeader handleModal={handleAddFriendModal} />
-        <ul className="scrollbar-none flex h-full flex-1 flex-col overflow-y-scroll rounded-xl bg-white p-4">
+        <ul className="scrollbar-none bg-base flex h-full flex-1 flex-col overflow-y-scroll rounded-xl p-4">
           <div className="text-primary flex flex-row items-center justify-between">
             <span className="uppercase">All friends</span>
             <span className="">{user?.displayName ?? user?.email}</span>

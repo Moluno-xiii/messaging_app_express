@@ -6,7 +6,7 @@ interface Props {
 }
 const ChatsHeader: React.FC<Props> = ({ handleModal }) => {
   return (
-    <header className="flex flex-row items-center justify-between gap-4 rounded-xl bg-white p-4">
+    <header className="bg-base flex flex-row items-center justify-between gap-4 rounded-xl p-4">
       <span className="text-2xl font-bold">Chats</span>
       <input
         type="text"

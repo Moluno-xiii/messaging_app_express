@@ -10,19 +10,18 @@ interface PropTypes {
 
 const ChatDetails: React.FC<PropTypes> = ({ friendDetails }) => {
   return (
-    <section className="flex min-h-full w-full min-w-[408px] flex-1 flex-col gap-y-2">
-      <FriendChatHeader status="online" friendDetails={friendDetails} />
-      <div className="flex min-h-full flex-1">
-        <Suspense
-          fallback={
-            <span className="flex min-h-full w-full flex-col items-center justify-center italic">
-              Loading conversations...
-            </span>
-          }
-        >
-          <FriendsMessages friendDetails={friendDetails} />
-        </Suspense>
-      </div>
+    <section className="scrollbar-none relative flex max-h-[calc(100dvh-50px)] min-h-[calc(100dvh-50px)] min-w-[408px] flex-col gap-y-3 overflow-y-scroll">
+      <FriendChatHeader friendDetails={friendDetails} />
+      <Suspense
+        fallback={
+          <span className="flex min-h-full w-full flex-col items-center justify-center italic">
+            Loading conversations...
+          </span>
+        }
+      >
+        <FriendsMessages friendDetails={friendDetails} />
+      </Suspense>
+
       <MessageInput selectedFriend={friendDetails.email} />
     </section>
   );

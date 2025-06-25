@@ -4,7 +4,9 @@
   /* --color-primary: #fe4a09; */
   --color-primary: #404040;
   --color-secondary: #02001a;
-  --color-background: #f1f1f1;
+  --color-background: #a3a3a3;
+  --color-base: #d4d4d4;
+  /* --color-background: #f1f1f1; */
   --color-foreground: #242424;
   --font-montserrat: "Montserrat", "system-ui, Avenir";
   --font-roboto: "Roboto", "system-ui, Avenir";
